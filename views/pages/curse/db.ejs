@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <%- include ("../../components/header.ejs") %>
+</head>
+
+<body>
+  <div class="container">
+    <h2>Database</h2>
+
+    <ul>
+      <% results.forEach(function(r) { %>
+        <li>
+          <%= r.id %> - <%= r.value %>
+        </li>
+        <% }); %>
+    </ul>
+
+  </div>
+</body>
+
+</html>
