@@ -41,7 +41,9 @@ app.get('/curse', async (req, res) => {
     const p1 = part1.rows[0].value
     const gender = part1.rows[0].gender
 
-    const condition = `gender = ${gender} or gender = 0`
+    let condition = `gender = ${gender} or gender = 0`
+    if (gender == 0) condition = '1=1'
+
     const part2 = await client.query(`
       SELECT value FROM part2 where ${condition} 
       OFFSET floor(random()*(select count(*) from part2 where ${condition})) LIMIT 1
