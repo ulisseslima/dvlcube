@@ -37,11 +37,20 @@ app.get('/curse', async (req, res) => {
   try {
     const client = await pool.connect()
     
-    const part1 = await client.query("SELECT value, gender FROM part1 OFFSET floor(random()*(select count(*) from part1)) LIMIT 1")
-    const p1 = part1.rows[0].value
-    let gender = part1.rows[0].gender
+    const part0 = await client.query("SELECT value, gender FROM part0 OFFSET floor(random()*(select count(*) from part0)) LIMIT 1")
+    const p0 = part0.rows[0].value
+    let gender = part0.rows[0].gender
 
     let condition = `gender = ${gender} or gender = 0`
+    if (gender == 0) condition = '1=1'
+
+    const part1 = await client.query(`
+      SELECT value, gender FROM part1 where ${condition} OFFSET floor(random()*(select count(*) from part1 where ${condition})) LIMIT 1
+    `)
+    const p1 = part1.rows[0].value
+    gender = part1.rows[0].gender
+
+    condition = `gender = ${gender} or gender = 0`
     if (gender == 0) condition = '1=1'
 
     const part2 = await client.query(`
@@ -60,6 +69,7 @@ app.get('/curse', async (req, res) => {
     
     const result = { 
       'face': cool(),
+      'p0': p0,
       'p1': p1,
       'p2': p2,
       'p3': p3
