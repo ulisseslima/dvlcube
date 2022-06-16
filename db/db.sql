@@ -1267,8 +1267,8 @@ insert into part3 (value, gender) values ('em fazendinha', 0);
 insert into part3 (value, gender) values ('de caramelo', 0);
 insert into part3 (value, gender) values ('caramelizada', 1);
 insert into part3 (value, gender) values ('caramelizado', 2);
-insert into part3 (value, gender) values ('adesivas', 1);
-insert into part3 (value, gender) values ('adesivos', 2);
+insert into part3 (value, gender) values ('adesiva', 1);
+insert into part3 (value, gender) values ('adesivo', 2);
 insert into part3 (value, gender) values ('que cresceu com home schooling', 0);
 insert into part3 (value, gender) values ('de papel', 0);
 insert into part3 (value, gender) values ('clonada', 1);
@@ -1287,7 +1287,17 @@ insert into part3 (value, gender) values ('de brócolis', 0);
 insert into part3 (value, gender) values ('morrendo de bri', 0);
 insert into part3 (value, gender) values ('que só usa oral-b complete', 0);
 
--- 2021-06-24
+-- 2022-06-15
+insert into part0 (value, gender) values ('impressora de', 0);
+insert into part0 (value, gender) values ('vem', 0);
+insert into part0 (value, gender) values ('vai', 0);
+insert into part0 (value, gender) values ('ah', 0);
+insert into part0 (value, gender) values ('mais velha que uma', 1);
+insert into part0 (value, gender) values ('mais velho que um', 2);
+
+insert into part1 (value, gender) values ('motogirl', 1);
+insert into part1 (value, gender) values ('motoboy', 2);
+insert into part1 (value, gender) values ('jardinagem', 1);
 insert into part1 (value, gender) values ('coca-cola', 1);
 insert into part1 (value, gender) values ('pepsi', 1);
 insert into part1 (value, gender) values ('pirata', 0);
@@ -1299,8 +1309,12 @@ insert into part1 (value, gender) values ('machista', 0);
 insert into part1 (value, gender) values ('misoginista', 0);
 insert into part1 (value, gender) values ('supremacista', 0);
 
+insert into part2 (value, gender) values ('raquítica', 1);
+insert into part2 (value, gender) values ('raquítico', 2);
+insert into part2 (value, gender) values ('na plantação', 1);
+insert into part2 (value, gender) values ('esquerdista', 0);
 insert into part2 (value, gender) values ('hétero', 0);
-insert into part2 (value, gender) values ('hétero top', 0);
+insert into part2 (value, gender) values ('hétero-top', 0);
 insert into part2 (value, gender) values ('safadinha', 1);
 insert into part2 (value, gender) values ('safadinho', 2);
 insert into part2 (value, gender) values ('lazarenta', 1);
@@ -1310,7 +1324,13 @@ insert into part2 (value, gender) values ('trincando', 0);
 insert into part2 (value, gender) values ('socialista', 0);
 insert into part2 (value, gender) values ('comunista', 0);
 insert into part2 (value, gender) values ('coça-coça', 0);
+insert into part2 (value, gender) values ('zipada', 1);
+insert into part2 (value, gender) values ('zipado', 0);
+insert into part2 (value, gender) values ('parecida com o Silvio Santos', 1);
+insert into part2 (value, gender) values ('parecido com o Silvio Santos', 2);
 
+insert into part3 (value, gender) values ('de busão', 0);
+insert into part3 (value, gender) values ('no busão', 0);
 insert into part3 (value, gender) values ('mais burra que o monark', 1);
 insert into part3 (value, gender) values ('mais burro que o monark', 2);
 insert into part3 (value, gender) values ('nazista', 0);
@@ -1335,4 +1355,6 @@ insert into part3 (value, gender) values ('esganiçada', 1);
 insert into part3 (value, gender) values ('esganiçado', 2);
 insert into part3 (value, gender) values ('do pau de pau', 0);
 insert into part3 (value, gender) values ('com 90% em MGLU3', 0);
-
+insert into part3 (value, gender) values ('abusiva', 1);
+insert into part3 (value, gender) values ('abusivo', 2);
+insert into part3 (value, gender) values ('de cogumelos', 0);
