@@ -561,8 +561,8 @@ insert into part3 (value, gender) values ('investidora de ethereum', 1);
 insert into part3 (value, gender) values ('investidor de bitcoin', 2);
 insert into part3 (value, gender) values ('do pé torto', 0);
 insert into part3 (value, gender) values ('da canela ralada', 0);
-insert into part3 (value, gender) values ('extramemente desafinada', 1);
-insert into part3 (value, gender) values ('extramemente desafinado', 2);
+insert into part3 (value, gender) values ('extremamente desafinada', 1);
+insert into part3 (value, gender) values ('extremamente desafinado', 2);
 insert into part3 (value, gender) values ('descendo pelo ralo', 0);
 insert into part3 (value, gender) values ('descendo ralo abaixo', 0);
 insert into part3 (value, gender) values ('aspirante a princesa guerreira', 0);
@@ -1290,8 +1290,7 @@ insert into part3 (value, gender) values ('morrendo de bri', 0);
 insert into part3 (value, gender) values ('que só usa oral-b complete', 0);
 
 -- 2022-06-15
-insert into part0 (value, gender) values ('impressora de', 1);
-insert into part0 (value, gender) values ('impressor de', 2);
+insert into part0 (value, gender) values ('impressora de', 0);
 insert into part0 (value, gender) values ('vem', 0);
 insert into part0 (value, gender) values ('vai', 0);
 insert into part0 (value, gender) values ('ah', 0);
