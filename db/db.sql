@@ -498,7 +498,6 @@ insert into part1 (value, gender) values ('boneca', 1);
 insert into part1 (value, gender) values ('boneco', 2);
 insert into part1 (value, gender) values ('bárbara', 1);
 insert into part1 (value, gender) values ('bárbaro', 2);
-insert into part1 (value, gender) values ('bolinho de arroz', 2);
 insert into part1 (value, gender) values ('micróbio', 2);
 insert into part1 (value, gender) values ('verme', 2);
 
@@ -1450,3 +1449,56 @@ insert into part3 (value, gender) values ('copião', 2);
 insert into part3 (value, gender) values ('que fala com a mão', 0);
 insert into part3 (value, gender) values ('no fundo do poço', 0);
 insert into part3 (value, gender) values ('gritando gerônimo', 0);
+
+-- 2022-06-16
+insert into part0 (value, gender) values ('bolinha de', 1);
+insert into part0 (value, gender) values ('bolinho de', 2);
+insert into part0 (value, gender) values ('pior que uma', 1);
+insert into part0 (value, gender) values ('pior que um', 2);
+insert into part0 (value, gender) values ('quem sou eu pra discutir com essa', 1);
+insert into part0 (value, gender) values ('quem sou eu pra discutir com esse', 2);
+insert into part0 (value, gender) values ('pra que discutir com essa', 1);
+insert into part0 (value, gender) values ('pra que discutir com esse', 2);
+insert into part0 (value, gender) values ('pra que essa', 1);
+insert into part0 (value, gender) values ('pra que esse', 2);
+insert into part0 (value, gender) values ('e essa', 1);
+insert into part0 (value, gender) values ('e esse', 2);
+insert into part0 (value, gender) values ('parece a', 1);
+insert into part0 (value, gender) values ('parece o', 2);
+insert into part0 (value, gender) values ('parece uma', 1);
+insert into part0 (value, gender) values ('parece um', 2);
+insert into part0 (value, gender) values ('ninguém reclama dessa', 1);
+insert into part0 (value, gender) values ('ninguém reclama desse', 2);
+
+insert into part1 (value, gender) values ('jogadora', 1);
+insert into part1 (value, gender) values ('jogador', 2);
+insert into part1 (value, gender) values ('edredom', 2);
+insert into part1 (value, gender) values ('disco', 2);
+insert into part1 (value, gender) values ('disquinho', 2);
+insert into part1 (value, gender) values ('lesminha', 1);
+insert into part1 (value, gender) values ('lesmona', 2);
+insert into part1 (value, gender) values ('lesma', 1);
+insert into part1 (value, gender) values ('arroz', 2);
+insert into part1 (value, gender) values ('queijo', 2);
+insert into part1 (value, gender) values ('mamãe noel', 1);
+insert into part1 (value, gender) values ('papai noel', 2);
+insert into part1 (value, gender) values ('skill', 0);
+insert into part1 (value, gender) values ('jar jar binks', 2);
+
+insert into part2 (value, gender) values ('de vinil', 0);
+insert into part2 (value, gender) values ('passiva', 1);
+insert into part2 (value, gender) values ('passivo', 2);
+insert into part2 (value, gender) values ('do star wars', 0);
+insert into part2 (value, gender) values ('com o cu na mão', 0);
+insert into part2 (value, gender) values ('esquisita', 1);
+insert into part2 (value, gender) values ('esquisito', 2);
+
+insert into part3 (value, gender) values ('na neve', 0);
+insert into part3 (value, gender) values ('beijável', 0);
+insert into part3 (value, gender) values ('nada beijável', 0);
+insert into part3 (value, gender) values ('quebrando a chaminé', 0);
+insert into part3 (value, gender) values ('igual o internet explorer', 0);
+insert into part3 (value, gender) values ('pior que o internet explorer', 0);
+insert into part3 (value, gender) values ('parecendo o internet explorer', 0);
+insert into part3 (value, gender) values ('falando que tá sem internet', 0);
+insert into part3 (value, gender) values ('que não liga nunca', 0);
