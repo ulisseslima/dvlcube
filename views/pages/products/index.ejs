@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <%- include ("../../components/header.ejs") %>
+</head>
+
+<body>
+  <div class="container relative-fonts">
+    <div class="row">
+      <div class="col s12">
+        <h1>
+          Products
+        </h1>
+
+        <ul>
+          <% products.forEach(product => { %>
+            <li>
+              <a href="<%= 'products/ops/'+product.id %>">
+                <%= product.name %>
+              </a>
+              <a class="bold" href="<%= 'products/ops/brand/'+product.brand %>">
+                <%= product.brand %>
+              </a>
+            </li>
+          <% }) %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

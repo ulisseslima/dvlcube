@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <%- include ("../../components/header.ejs") %>
+</head>
+
+<body>
+  <div class="container relative-fonts">
+    <div class="row">
+      <div class="col s12">
+        <a href="/products">
+          back
+        </a>
+
+        <h1>
+          <%= product %> Product Ops
+        </h1>
+
+        <table class="centered striped highlight">
+          <thead>
+            <tr>
+              <th>date</th>
+              <th>store</th>
+              <th>brand</th>
+              <th>product</th>
+              <th>price</th>
+              <th>amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% pops.forEach(op => { %>
+            <tr>
+              <td>
+                <%= df(op.created).format("YYYY-MM-DD") %>
+              </td>
+              <td>
+                <a href="<%= '/products/ops/store/'+op.store_name %>">
+                  <%= op.store_name %>
+                </a>
+              </td>
+              <td>
+                <a href="<%= '/products/ops/brand/'+op.brand %>">
+                  <%= op.brand %>
+                </a>
+              </td>
+              <td>
+                <a href="<%= '/products/ops/'+op.product_id %>">
+                  <%= op.product_name %>
+                </a>
+              </td>
+              <td>
+                <%= op.price %>
+              </td>
+              <td>
+                <%= op.amount %>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

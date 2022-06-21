@@ -1509,7 +1509,9 @@ insert into part0 (value, gender) values ('o que é um', 2);
 insert into part0 (value, gender) values ('filho de', 0);
 insert into part0 (value, gender) values ('filho de uma', 1);
 insert into part0 (value, gender) values ('filho de um', 2);
+insert into part0 (value, gender) values ('todo castigo pra', 0);
 
+insert into part1 (value, gender) values ('castigo', 2);
 insert into part1 (value, gender) values ('bacia', 1);
 insert into part1 (value, gender) values ('peido', 2);
 insert into part1 (value, gender) values ('caranguejo', 2);
@@ -1526,3 +1528,4 @@ insert into part3 (value, gender) values ('na fila do pão', 0);
 insert into part3 (value, gender) values ('no inferno', 0);
 insert into part3 (value, gender) values ('cagada', 1);
 insert into part3 (value, gender) values ('cagado', 2);
+insert into part3 (value, gender) values ('que não é pouco', 0);
