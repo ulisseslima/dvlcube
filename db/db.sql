@@ -1502,3 +1502,27 @@ insert into part3 (value, gender) values ('pior que o internet explorer', 0);
 insert into part3 (value, gender) values ('parecendo o internet explorer', 0);
 insert into part3 (value, gender) values ('falando que tá sem internet', 0);
 insert into part3 (value, gender) values ('que não liga nunca', 0);
+
+-- 2022-06-16
+insert into part0 (value, gender) values ('o que é uma', 1);
+insert into part0 (value, gender) values ('o que é um', 2);
+insert into part0 (value, gender) values ('filho de', 0);
+insert into part0 (value, gender) values ('filho de uma', 1);
+insert into part0 (value, gender) values ('filho de um', 2);
+
+insert into part1 (value, gender) values ('bacia', 1);
+insert into part1 (value, gender) values ('peido', 2);
+insert into part1 (value, gender) values ('caranguejo', 2);
+
+insert into part2 (value, gender) values ('hidráulica', 1);
+insert into part2 (value, gender) values ('hidráulico', 2);
+insert into part2 (value, gender) values ('morta', 1);
+insert into part2 (value, gender) values ('morto', 2);
+insert into part2 (value, gender) values ('pra quem já está', 0);
+
+insert into part3 (value, gender) values ('que não sabe fazer agrupamento', 0);
+insert into part3 (value, gender) values ('que não sabe fazer select', 0);
+insert into part3 (value, gender) values ('na fila do pão', 0);
+insert into part3 (value, gender) values ('no inferno', 0);
+insert into part3 (value, gender) values ('cagada', 1);
+insert into part3 (value, gender) values ('cagado', 2);
