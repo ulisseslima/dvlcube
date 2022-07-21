@@ -1442,7 +1442,8 @@ insert into part3 (value, gender) values ('no rolê', 0);
 insert into part3 (value, gender) values ('sem rítmo', 0);
 insert into part3 (value, gender) values ('descoordenada', 1);
 insert into part3 (value, gender) values ('descoordenado', 2);
-insert into part3 (value, gender) values ('destampada', 0);
+insert into part3 (value, gender) values ('destampada', 1);
+insert into part3 (value, gender) values ('destampado', 2);
 insert into part3 (value, gender) values ('sem tampa', 0);
 insert into part3 (value, gender) values ('copiona', 1);
 insert into part3 (value, gender) values ('copião', 2);
@@ -1529,3 +1530,72 @@ insert into part3 (value, gender) values ('no inferno', 0);
 insert into part3 (value, gender) values ('cagada', 1);
 insert into part3 (value, gender) values ('cagado', 2);
 insert into part3 (value, gender) values ('que não é pouco', 0);
+
+-- 2022-07-04
+insert into part0 (value, gender) values ('discípula de', 1);
+insert into part0 (value, gender) values ('discípulo de', 2);
+insert into part0 (value, gender) values ('fissurada em', 1);
+insert into part0 (value, gender) values ('fissurado em', 2);
+insert into part0 (value, gender) values ('pedaço de', 2);
+insert into part0 (value, gender) values ('como eu faço essa', 1);
+insert into part0 (value, gender) values ('como eu faço esse', 2);
+insert into part0 (value, gender) values ('odeio', 0);
+insert into part0 (value, gender) values ('amo', 0);
+insert into part0 (value, gender) values ('venero', 0);
+insert into part0 (value, gender) values ('eu condeno', 0);
+insert into part0 (value, gender) values ('imagino uma', 1);
+insert into part0 (value, gender) values ('imagino um', 2);
+insert into part0 (value, gender) values ('almejo a', 1);
+insert into part0 (value, gender) values ('almejo o', 2);
+insert into part0 (value, gender) values ('nossa, mitou', 0);
+insert into part0 (value, gender) values ('uau, lacrou', 0);
+
+insert into part1 (value, gender) values ('pastel', 2);
+insert into part1 (value, gender) values ('catota', 1);
+insert into part1 (value, gender) values ('meteoro', 2);
+insert into part1 (value, gender) values ('bolacha', 1);
+insert into part1 (value, gender) values ('uva', 1);
+insert into part1 (value, gender) values ('filet', 0);
+insert into part1 (value, gender) values ('ioiô', 2);
+insert into part1 (value, gender) values ('Obi-Wan', 2);
+insert into part1 (value, gender) values ('Qui-Gon', 2);
+insert into part1 (value, gender) values ('calda', 1);
+insert into part1 (value, gender) values ('caldo', 2);
+insert into part1 (value, gender) values ('eclipse', 2);
+insert into part1 (value, gender) values ('shaka', 2);
+
+insert into part2 (value, gender) values ('de estimação', 0);
+insert into part2 (value, gender) values ('lacradora', 1);
+insert into part2 (value, gender) values ('lacrador', 2);
+insert into part2 (value, gender) values ('encouraçada', 1);
+insert into part2 (value, gender) values ('encouraçado', 2);
+insert into part2 (value, gender) values ('lunar', 0);
+insert into part2 (value, gender) values ('de cana', 0);
+insert into part2 (value, gender) values ('paleontóloga', 1);
+insert into part2 (value, gender) values ('paleontólogo', 2);
+insert into part2 (value, gender) values ('paleolítica', 1);
+insert into part2 (value, gender) values ('paleolítico', 2);
+insert into part2 (value, gender) values ('anatômica', 1);
+insert into part2 (value, gender) values ('anatômico', 2);
+insert into part2 (value, gender) values ('cósmica', 1);
+insert into part2 (value, gender) values ('cósmico', 2);
+insert into part2 (value, gender) values ('passa', 1);
+insert into part2 (value, gender) values ('satânica', 1);
+insert into part2 (value, gender) values ('satânico', 2);
+insert into part2 (value, gender) values ('mignon', 0);
+insert into part2 (value, gender) values ('de virgem', 0);
+
+insert into part3 (value, gender) values ('fã do mito', 0);
+insert into part3 (value, gender) values ('esmerilhando', 0);
+insert into part3 (value, gender) values ('de carpaccio', 0);
+insert into part3 (value, gender) values ('sem cauda', 0);
+insert into part3 (value, gender) values ('sem atalho', 0);
+insert into part3 (value, gender) values ('sangrenta', 1);
+insert into part3 (value, gender) values ('sangrento', 2);
+insert into part3 (value, gender) values ('descaralhada', 1);
+insert into part3 (value, gender) values ('descaralhado', 2);
+insert into part3 (value, gender) values ('escarlate', 0);
+
+omae ha mou shindeiru
+nani?!
+que?!
