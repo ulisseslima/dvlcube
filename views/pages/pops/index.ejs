@@ -26,6 +26,7 @@
               <th>product</th>
               <th>price</th>
               <th>amount</th>
+              <th>kilo</th>
             </tr>
           </thead>
           <tbody>
@@ -54,6 +55,9 @@
               </td>
               <td>
                 <%= op.amount %>
+              </td>
+              <td>
+                <%= Math.round(((1 * op.price / op.amount) + Number.EPSILON) * 100) / 100 %>
               </td>
             </tr>
             <% }) %>
