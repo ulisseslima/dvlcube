@@ -7,6 +7,8 @@ router.get('/cnpj', async (req, res) => {
         if (!number) res.json({message:"empty"})
 
         let valid = validateCnpj(number)
+		if (!valid) res.status(406)
+		
         res.json({"valid": valid})
     } catch (err) {
         console.error(err)
@@ -20,6 +22,8 @@ router.get('/cpf', async (req, res) => {
         if (!number) res.json({message:"empty"})
 
         let valid = validateCpf(number)
+		if (!valid) res.status(406)
+
         res.json({"valid": valid})
     } catch (err) {
         console.error(err)
