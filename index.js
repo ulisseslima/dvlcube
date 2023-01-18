@@ -36,7 +36,7 @@ app.use((req, res, next) => {
     // console.log(`auth: ${auth}`, req.headers)
     if (!auth) return res.status(403).json({ error: 'unauthorized.' })
 
-    if (auth === `Bearer ${process.env.BEARER_TOKEN}` || auth === process.env.RAPIDAPI_SECRET) {
+    if (auth === `Bearer ${process.env.BEARER_TOKEN}` || process.env.RAPIDAPI_SECRET.split(" ").includes(auth)) {
         next()
     } else {
         return res.status(403).json({ error: 'unauthorized.' })
