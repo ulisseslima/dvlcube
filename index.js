@@ -32,11 +32,15 @@ app.use('/products', products)
 
 // routes require auth header starting from here:
 app.use((req, res, next) => {
-    let bearer = req.headers.authorization
-    if (!bearer || bearer !== `Bearer ${process.env.BEARER_TOKEN}`) {
+    let auth = req.headers.authorization || req.headers['x-rapidapi-proxy-secret']
+    // console.log(`auth: ${auth}`, req.headers)
+    if (!auth) return res.status(403).json({ error: 'unauthorized.' })
+
+    if (auth === `Bearer ${process.env.BEARER_TOKEN}` || auth === process.env.RAPIDAPI_SECRET) {
+        next()
+    } else {
         return res.status(403).json({ error: 'unauthorized.' })
     }
-    next()
 })
 
 app.use('/validate', validate)
