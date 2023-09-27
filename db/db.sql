@@ -334,7 +334,7 @@ insert into part2 (value, gender) values ('assombrada', 1);
 insert into part2 (value, gender) values ('assombrado', 2);
 insert into part2 (value, gender) values ('surfista', 0);
 insert into part2 (value, gender) values ('programador de php', 2);
-insert into part2 (value, gender) values ('programadora de php', 2);
+insert into part2 (value, gender) values ('programadora de php', 1);
 insert into part2 (value, gender) values ('desajustada', 1);
 insert into part2 (value, gender) values ('desajustado', 2);
 insert into part2 (value, gender) values ('saltitante', 0);
@@ -1326,7 +1326,7 @@ insert into part2 (value, gender) values ('socialista', 0);
 insert into part2 (value, gender) values ('comunista', 0);
 insert into part2 (value, gender) values ('coça-coça', 0);
 insert into part2 (value, gender) values ('zipada', 1);
-insert into part2 (value, gender) values ('zipado', 0);
+insert into part2 (value, gender) values ('zipado', 2);
 insert into part2 (value, gender) values ('parecida com o Silvio Santos', 1);
 insert into part2 (value, gender) values ('parecido com o Silvio Santos', 2);
 
@@ -1477,7 +1477,7 @@ insert into part1 (value, gender) values ('edredom', 2);
 insert into part1 (value, gender) values ('disco', 2);
 insert into part1 (value, gender) values ('disquinho', 2);
 insert into part1 (value, gender) values ('lesminha', 1);
-insert into part1 (value, gender) values ('lesmona', 2);
+insert into part1 (value, gender) values ('lesmona', 1);
 insert into part1 (value, gender) values ('lesma', 1);
 insert into part1 (value, gender) values ('arroz', 2);
 insert into part1 (value, gender) values ('queijo', 2);
@@ -1596,6 +1596,32 @@ insert into part3 (value, gender) values ('descaralhada', 1);
 insert into part3 (value, gender) values ('descaralhado', 2);
 insert into part3 (value, gender) values ('escarlate', 0);
 
-omae ha mou shindeiru
-nani?!
-que?!
+-- 2023-01-16 (pendente)
+insert into part0 (value, gender) values ('quê?!', 0);
+insert into part0 (value, gender) values ('hein?!', 0);
+insert into part0 (value, gender) values ('mas hein?!', 0);
+insert into part0 (value, gender) values ('hã?!', 0);
+insert into part0 (value, gender) values ('tem que ver essa', 1);
+insert into part0 (value, gender) values ('tem que ver esse', 2);
+insert into part0 (value, gender) values ('tá ok', 0);
+
+insert into part1 (value, gender) values ('intervenção', 0);
+insert into part1 (value, gender) values ('telespectadora de podcast', 1);
+insert into part1 (value, gender) values ('telespectador de podcast', 2);
+insert into part1 (value, gender) values ('rabina', 1);
+insert into part1 (value, gender) values ('rabino', 2);
+insert into part1 (value, gender) values ('ex-presidente', 0);
+insert into part1 (value, gender) values ('queimadora de', 1);
+insert into part1 (value, gender) values ('queimador de', 2);
+
+insert into part2 (value, gender) values ('alienígena', 0);
+insert into part2 (value, gender) values ('pneu', 0);
+insert into part2 (value, gender) values ('ortodoxa', 1);
+insert into part2 (value, gender) values ('ortodoxo', 2);
+
+insert into part3 (value, gender) values ('invasora de propriedade', 1);
+insert into part3 (value, gender) values ('invasor de propriedade', 2);
+insert into part3 (value, gender) values ('reformada', 1);
+insert into part3 (value, gender) values ('reformado', 2);
+insert into part3 (value, gender) values ('azeitada', 1);
+insert into part3 (value, gender) values ('azeitado', 2);
