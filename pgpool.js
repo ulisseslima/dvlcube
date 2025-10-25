@@ -27,9 +27,8 @@ exports.pgPool = () => {
 exports.insertInto = (table, object) => {
   let pool = this.pgPool()
   let cols = object.fields.map()
-  for (let field of object.fields) {
-    
-  }
+  // for (let field of object.fields) {
+  // }
   let insert = `insert into ${table} (${cols}) values (${vals})`
   return pool.query(insert)
 }

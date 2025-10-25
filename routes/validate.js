@@ -7,7 +7,9 @@ router.get('/cnpj', async (req, res) => {
         if (!number) res.json({message:"empty"})
 
         let valid = validateCnpj(number)
-		if (!valid) res.status(406)
+		if (!valid) {
+			res.status(406)
+		}
 		
         res.json({"valid": valid})
     } catch (err) {
@@ -22,7 +24,9 @@ router.get('/cpf', async (req, res) => {
         if (!number) res.json({message:"empty"})
 
         let valid = validateCpf(number)
-		if (!valid) res.status(406)
+		if (!valid) {
+			res.status(406)
+		}
 
         res.json({"valid": valid})
     } catch (err) {
@@ -34,7 +38,7 @@ router.get('/cpf', async (req, res) => {
 module.exports = router
 
 function validateCpf(cpf) {
-	exp = /\.|\-/g
+	let exp = /\.|\-/g
 	cpf = cpf.toString().replace(exp, "");
 	let numeros,
 		digitos,
@@ -69,17 +73,14 @@ function validateCpf(cpf) {
 		for (i = 11; i > 1; i--)
 			soma += numeros.charAt(11 - i) * i
 		resultado = soma % 11 < 2 ? 0 : 11 - soma % 11
-		if (resultado != digitos.charAt(1))
-			return false
-        
-		return true
+		return resultado == digitos.charAt(1);
 	} else {
 		return false
     }
 }
 
 function validateCnpj(cnpj) {
-	exp = /\.|\-|\//g
+	let exp = /\.|\-|\//g
 	cnpj = cnpj.toString().replace(exp, "")
 	let numeros,
 		digitos,
@@ -114,8 +115,9 @@ function validateCnpj(cnpj) {
 				pos = 9
 		}
 		resultado = soma % 11 < 2 ? 0 : 11 - soma % 11
-		if (resultado != digitos.charAt(0))
+		if (resultado != digitos.charAt(0)) {
 			return false
+		}
 		
         tamanho = tamanho + 1
 		numeros = cnpj.substring(0, tamanho)
@@ -129,10 +131,7 @@ function validateCnpj(cnpj) {
 		}
 		
         resultado = soma % 11 < 2 ? 0 : 11 - soma % 11
-        if (resultado != digitos.charAt(1))
-			return false
-
-		return true
+        return resultado == digitos.charAt(1);
 	} else {
 		return false
     }
