@@ -25,6 +25,30 @@ const { ensureAuthenticated } = require('./middleware/auth')
 // bots
 const { dlgramBot } = require('./bots/dlgram_bot')
 
+// Global unhandled promise rejection handler
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('=== UNHANDLED PROMISE REJECTION ===')
+    console.error('Timestamp:', new Date().toISOString())
+    console.error('Reason:', reason)
+    if (reason && reason.config) {
+        console.error('Axios config:', {
+            url: reason.config.url,
+            method: reason.config.method,
+            baseURL: reason.config.baseURL,
+            data: reason.config.data
+        })
+    }
+    if (reason && reason.response) {
+        console.error('Response:', {
+            status: reason.response.status,
+            statusText: reason.response.statusText,
+            data: reason.response.data
+        })
+    }
+    console.error('Stack:', reason && reason.stack)
+    console.error('===================================')
+})
+
 async function startNgrok() {
     console.log("starting ngrok...")
     const listener = await ngrok.forward({ addr: PORT, authtoken: process.env.NGROK_AUTHTOKEN })
@@ -33,12 +57,13 @@ async function startNgrok() {
 }
 
 (async () => {
-    let ngrokUrl
-    if (process.env.NGROK_AUTHTOKEN) {
-        ngrokUrl = await startNgrok()
-    }
-    
-    const app = express()
+    try {
+        let ngrokUrl
+        if (process.env.NGROK_AUTHTOKEN) {
+            ngrokUrl = await startNgrok()
+        }
+        
+        const app = express()
     app.use(express.static(path.join(__dirname, 'public')))
     // required to receive request bodies:
     app.use(express.json()) // or app.use(bodyParser.json())
@@ -118,12 +143,24 @@ async function startNgrok() {
     /////////////////////// BOTS /////////////////
     if (process.env.TOKEN_DLGRAM_BOT) {
         try {
+            console.log('Setting up dlgram bot webhook...')
             // prefer a bare domain for webhook registration (strip protocol if present)
             const domain = (ngrokUrl || process.env.DOMAIN || '')
                 .toString()
-            app.use(await dlgramBot.createWebhook({ domain }))
+            console.log('Domain for webhook:', domain)
+            const webhook = await dlgramBot.createWebhook({ domain })
+            app.use(webhook)
+            console.log('Dlgram bot webhook setup complete')
         } catch (err) {
             console.error('Failed to create dlgram webhook:', err)
+            console.error('Error details:', {
+                message: err.message,
+                stack: err.stack,
+                response: err.response ? {
+                    status: err.response.status,
+                    data: err.response.data
+                } : undefined
+            })
         }
     } else {
         console.log('TOKEN_DLGRAM_BOT not set — skipping dlgram webhook setup')
@@ -152,4 +189,11 @@ async function startNgrok() {
             return res.status(403).json({ error: '2: unauthorized.' })
         }
     })
+    } catch (err) {
+        console.error('=== FATAL ERROR IN MAIN FUNCTION ===')
+        console.error('Error:', err)
+        console.error('Stack:', err.stack)
+        console.error('=====================================')
+        process.exit(1)
+    }
 })()
