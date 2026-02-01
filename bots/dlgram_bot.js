@@ -13,9 +13,12 @@ const { message } = require('telegraf/filters')
 // https://www.npmjs.com/package/insta-fetcher?activeTab=readme
 const { igApi, getCookie } = require("insta-fetcher")
 let ig
-(async () => {
-  const session_id = await getCookie("dvlcube", "81ggd5fml")
-  console.log(session_id)
+const INSTA_USER = process.env.INSTA_USER
+const INSTA_COOKIE = process.env.INSTA_COOKIE
+
+;(async () => {
+  const session_id = await getCookie(INSTA_USER, INSTA_COOKIE)
+  console.log('insta session id:', session_id)
   ig = new igApi(session_id)
 })()
 
