@@ -2,11 +2,14 @@ const express = require('express')
 const router = express.Router()
 
 router.get('/cnpj', async (req, res) => {
-    res.json({"cnpj": generateCnpj()})
+    const alphanumeric = req.query.alphanumeric === 'true' || req.query.alfa === 'true'
+    const mask = req.query.mask !== 'false' // Default to true
+    res.json({"cnpj": generateCnpj(alphanumeric, mask)})
 })
 
 router.get('/cpf', async (req, res) => {
-    res.json({"cpf": generateCpf()})
+    const mask = req.query.mask !== 'false' // Default to true
+    res.json({"cpf": generateCpf(mask)})
 })
 
 router.get('/title', async (req, res) => {
@@ -34,40 +37,83 @@ function mod(dividendo,divisor) {
 	return Math.round(dividendo - (Math.floor(dividendo/divisor)*divisor))
 }
 
-function generateCnpj() {
-	let n = 9
-	let n1 = gera_random(n)
-	let n2 = gera_random(n)
-	let n3 = gera_random(n)
-	let n4 = gera_random(n)
-	let n5 = gera_random(n)
-	let n6 = gera_random(n)
-	let n7 = gera_random(n)
-	let n8 = gera_random(n)
-	let n9 = 0;//gera_random(n);
-	let n10 = 0;//gera_random(n);
-	let n11 = 0;//gera_random(n);
-	let n12 = 1;//gera_random(n);
-	let d1 = n12*2+n11*3+n10*4+n9*5+n8*6+n7*7+n6*8+n5*9+n4*2+n3*3+n2*4+n1*5
-	d1 = 11 - ( mod(d1,11) )
-	if (d1>=10) d1 = 0
-	let d2 = d1*2+n12*3+n11*4+n10*5+n9*6+n8*7+n7*8+n6*9+n5*2+n4*3+n3*4+n2*5+n1*6
-	d2 = 11 - ( mod(d2,11) )
-	if (d2>=10) d2 = 0
-
-	return ''+n1+n2+'.'+n3+n4+n5+'.'+n6+n7+n8+'/'+n9+n10+n11+n12+'-'+d1+d2
+function generateCnpj(alphanumeric = false, mask = true) {
+	let base = ''
+	
+	// Generate first 12 characters
+	for (let i = 0; i < 12; i++) {
+		if (alphanumeric && Math.random() < 0.5) {
+			// Generate uppercase letter (A-Z)
+			base += String.fromCharCode(65 + Math.floor(Math.random() * 26))
+		} else {
+			// Generate digit (0-9)
+			base += Math.floor(Math.random() * 10)
+		}
+	}
+	
+	// Convert to values array
+	let values = []
+	for (let i = 0; i < 12; i++) {
+		let char = base.charAt(i)
+		if (char >= '0' && char <= '9') {
+			values[i] = parseInt(char)
+		} else {
+			// Letter: convert using ASCII (A=17, B=18, etc.)
+			values[i] = char.charCodeAt(0) - 48
+		}
+	}
+	
+	// Calculate first check digit
+	const weights1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
+	values[12] = calculateCheckDigit(values, 12, weights1)
+	
+	// Calculate second check digit
+	const weights2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
+	values[13] = calculateCheckDigit(values, 13, weights2)
+	
+	// Build final CNPJ
+	const cnpj = base + values[12] + values[13]
+	
+	// Return with or without mask
+	if (mask) {
+		// Format: XX.XXX.XXX/XXXX-XX
+		return cnpj.substring(0, 2) + '.' + 
+		       cnpj.substring(2, 5) + '.' + 
+		       cnpj.substring(5, 8) + '/' + 
+		       cnpj.substring(8, 12) + '-' + 
+		       cnpj.substring(12, 14)
+	} else {
+		// Return unformatted
+		return cnpj
+	}
 }
 
-function generateCpf() {
+function calculateCheckDigit(values, length, weights) {
+	let sum = 0
+	for (let i = 0; i < length; i++) {
+		sum += values[i] * weights[i]
+	}
+	let remainder = sum % 11
+	return remainder < 2 ? 0 : 11 - remainder
+}
+
+function generateCpf(mask = true) {
 	let num1 = aleatorio();
 	let num2 = aleatorio();
 	let num3 = aleatorio();
 	
 	let dig1 = digPri(num1,num2,num3);
 	let dig2 = digSeg(num1,num2,num3,dig1);
-	let cpf= num1+"."+num2+"."+num3+"-"+dig1+""+dig2;
-	console.log(cpf);
-	return cpf;
+	
+	if (mask) {
+		let cpf = num1+"."+num2+"."+num3+"-"+dig1+""+dig2;
+		console.log(cpf);
+		return cpf;
+	} else {
+		let cpf = num1+num2+num3+dig1+dig2;
+		console.log(cpf);
+		return cpf;
+	}
 }
 	
 	

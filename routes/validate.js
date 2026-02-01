@@ -80,59 +80,55 @@ function validateCpf(cpf) {
 }
 
 function validateCnpj(cnpj) {
-	let exp = /\.|\-|\//g
-	cnpj = cnpj.toString().replace(exp, "")
-	let numeros,
-		digitos,
-		soma,
-		i,
-		resultado,
-		pos,
-		tamanho,
-		digitos_iguais
-
-	digitos_iguais = 1
+	if (!cnpj) return false
 	
-    if (cnpj.length < 14 && cnpj.length < 15)
-		return false
-
-	for (i = 0; i < cnpj.length - 1; i++) {
-		if (cnpj.charAt(i) != cnpj.charAt(i + 1)) {
-			digitos_iguais = 0
+	// Remove mask (dots, dashes, slashes)
+	let exp = /\.|\-|\//g
+	cnpj = cnpj.toString().toUpperCase().replace(exp, "")
+	
+	// Adjust size to 14 characters
+	if (cnpj.length !== 14) return false
+	
+	// Check if all characters are alphanumeric (A-Z or 0-9)
+	if (!/^[A-Z0-9]{14}$/.test(cnpj)) return false
+	
+	// Convert to values array
+	let values = []
+	for (let i = 0; i < 14; i++) {
+		let char = cnpj.charAt(i)
+		if (char >= '0' && char <= '9') {
+			values[i] = parseInt(char)
+		} else {
+			// Letter: convert using ASCII value minus 48
+			values[i] = char.charCodeAt(0) - 48
+		}
+	}
+	
+	// Check if all characters are the same (repeated)
+	let allSame = true
+	for (let i = 1; i < 14; i++) {
+		if (values[i] !== values[0]) {
+			allSame = false
 			break
-	    }
-    }
-
-	if (!digitos_iguais) {
-		tamanho = cnpj.length - 2
-		numeros = cnpj.substring(0, tamanho)
-		digitos = cnpj.substring(tamanho)
-		soma = 0
-		pos = tamanho - 7
-		for (i = tamanho; i >= 1; i--) {
-			soma += numeros.charAt(tamanho - i) * pos--
-			if (pos < 2)
-				pos = 9
 		}
-		resultado = soma % 11 < 2 ? 0 : 11 - soma % 11
-		if (resultado != digitos.charAt(0)) {
-			return false
-		}
-		
-        tamanho = tamanho + 1
-		numeros = cnpj.substring(0, tamanho)
-		soma = 0
-		pos = tamanho - 7
-		
-        for (i = tamanho; i >= 1; i--) {
-			soma += numeros.charAt(tamanho - i) * pos--
-			if (pos < 2)
-				pos = 9
-		}
-		
-        resultado = soma % 11 < 2 ? 0 : 11 - soma % 11
-        return resultado == digitos.charAt(1);
-	} else {
-		return false
-    }
+	}
+	if (allSame) return false
+	
+	// Calculate and verify first check digit
+	const weights1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
+	let sum1 = 0
+	for (let i = 0; i < 12; i++) {
+		sum1 += values[i] * weights1[i]
+	}
+	let checkDigit1 = sum1 % 11 < 2 ? 0 : 11 - (sum1 % 11)
+	
+	// Calculate and verify second check digit
+	const weights2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
+	let sum2 = 0
+	for (let i = 0; i < 13; i++) {
+		sum2 += values[i] * weights2[i]
+	}
+	let checkDigit2 = sum2 % 11 < 2 ? 0 : 11 - (sum2 % 11)
+	
+	return checkDigit1 === values[12] && checkDigit2 === values[13]
 }

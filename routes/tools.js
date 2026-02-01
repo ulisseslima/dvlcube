@@ -8,8 +8,13 @@ const routeMetadata = {
         description: 'Generate valid documents and data',
         icon: 'create',
         routes: [
-            { path: '/generate/cnpj', method: 'GET', name: 'Generate CNPJ', description: 'Generate a valid Brazilian CNPJ', params: [] },
-            { path: '/generate/cpf', method: 'GET', name: 'Generate CPF', description: 'Generate a valid Brazilian CPF', params: [] },
+            { path: '/generate/cnpj', method: 'GET', name: 'Generate CNPJ', description: 'Generate a valid Brazilian CNPJ (numeric or alphanumeric)', params: [
+                { name: 'alphanumeric', type: 'checkbox', required: false, label: 'Alphanumeric (A-Z, 0-9)' },
+                { name: 'mask', type: 'checkbox', required: false, label: 'Remove mask formatting' }
+            ]},
+            { path: '/generate/cpf', method: 'GET', name: 'Generate CPF', description: 'Generate a valid Brazilian CPF', params: [
+                { name: 'mask', type: 'checkbox', required: false, label: 'Remove mask formatting' }
+            ]},
             { path: '/generate/title', method: 'GET', name: 'Capitalize Title', description: 'Capitalize a title using style guide rules', params: [
                 { name: 'text', type: 'text', required: true, placeholder: 'Enter your title here' },
                 { name: 'style', type: 'select', required: false, options: ['APA', 'AP', 'CHICAGO', 'MLA', 'BB', 'AMA'], default: 'APA' }
