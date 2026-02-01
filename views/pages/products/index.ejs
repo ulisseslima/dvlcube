@@ -14,152 +14,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <!-- Common Styles -->
     <link rel="stylesheet" href="/css/common.css">
-    <style>
-
-        /* Products Grid */
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .product-card {
-            background: var(--card-background);
-            border-radius: 8px;
-            padding: 24px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: box-shadow 0.3s, transform 0.3s;
-            cursor: pointer;
-        }
-
-        .product-card:hover {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            transform: translateY(-2px);
-        }
-
-        .product-card .product-name {
-            font-size: 20px;
-            font-weight: 500;
-            color: var(--text-primary);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-        }
-
-        .product-card .product-name i {
-            margin-right: 8px;
-            color: var(--primary-color);
-            font-size: 24px;
-        }
-
-        .product-card .product-brand {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 16px;
-        }
-
-        .product-card .product-id {
-            font-family: 'Roboto Mono', monospace;
-            font-size: 12px;
-            color: var(--text-secondary);
-            background: #f5f5f5;
-            padding: 4px 8px;
-            border-radius: 4px;
-            display: inline-block;
-            margin-bottom: 16px;
-        }
-
-        .product-card .product-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 16px;
-        }
-
-        .product-card .btn-small {
-            background-color: var(--primary-color);
-        }
-
-        .product-card .btn-small:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .product-card .btn-small.secondary {
-            background-color: #546e7a;
-        }
-
-        .product-card .btn-small.secondary:hover {
-            background-color: #455a64;
-        }
-
-
-
-        /* List View */
-        .products-list {
-            background: var(--card-background);
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-
-        .product-list-item {
-            padding: 20px 24px;
-            border-bottom: 1px solid #f0f0f0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transition: background-color 0.3s;
-        }
-
-        .product-list-item:last-child {
-            border-bottom: none;
-        }
-
-        .product-list-item:hover {
-            background-color: #f5f5f5;
-        }
-
-        .product-list-item .product-info {
-            flex: 1;
-        }
-
-        .product-list-item .product-info h6 {
-            margin: 0 0 8px 0;
-            color: var(--text-primary);
-            font-size: 18px;
-        }
-
-        .product-list-item .product-info .product-meta {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        .product-list-item .product-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .product-list-item {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .product-list-item .product-actions {
-                margin-top: 12px;
-                width: 100%;
-            }
-        }
-    </style>
+    <!-- Products Styles -->
+    <link rel="stylesheet" href="/css/products.css">
 </head>
 <body>
     <!-- Navigation -->
@@ -198,7 +54,20 @@
                     </button>
                 </div>
             </div>
-            <div class="filter-chips" id="brand-filters"></div>
+            <div class="brand-filter-wrapper">
+                <div class="brand-input-wrapper">
+                    <div class="input-field">
+                        <i class="material-icons prefix">label</i>
+                        <input type="text" id="brand-input" placeholder="Type brand name and press Enter...">
+                        <label for="brand-input">Filter by Brand</label>
+                    </div>
+                    <button class="btn waves-effect waves-light" onclick="addBrandFilter()">
+                        <i class="material-icons left">add</i>
+                        Add
+                    </button>
+                </div>
+                <div class="active-brand-chips" id="active-brands"></div>
+            </div>
         </div>
 
         <!-- Stats Section -->
@@ -294,37 +163,55 @@
         // Active filters - declare early to avoid initialization errors
         let activeFilters = {
             search: '',
-            brand: null,
+            brands: [], // Changed to array for multi-brand filtering
             view: 'grid'
         };
 
-        // Render brand filter chips
-        function renderBrandFilters() {
-            const container = document.getElementById('brand-filters');
-            container.innerHTML = '<span style="color: var(--text-secondary); margin-right: 8px;">Brands:</span>';
+        // Add brand filter
+        function addBrandFilter() {
+            const input = document.getElementById('brand-input');
+            const brandName = input.value.trim();
             
-            brands.forEach(brand => {
+            if (brandName && !activeFilters.brands.includes(brandName.toLowerCase())) {
+                activeFilters.brands.push(brandName.toLowerCase());
+                input.value = '';
+                renderActiveBrands();
+                filterProducts();
+            }
+        }
+
+        // Remove brand filter
+        function removeBrandFilter(brand) {
+            activeFilters.brands = activeFilters.brands.filter(b => b !== brand);
+            renderActiveBrands();
+            filterProducts();
+        }
+
+        // Render active brand chips
+        function renderActiveBrands() {
+            const container = document.getElementById('active-brands');
+            container.innerHTML = '';
+            
+            activeFilters.brands.forEach(brand => {
                 const chip = document.createElement('div');
                 chip.className = 'chip';
-                chip.textContent = brand;
-                chip.onclick = () => toggleBrandFilter(brand, chip);
+                chip.innerHTML = `
+                    <span>${brand}</span>
+                    <i class="material-icons" onclick="removeBrandFilter('${brand}')">close</i>
+                `;
                 container.appendChild(chip);
             });
         }
 
-        // Toggle brand filter
-        function toggleBrandFilter(brand, chipElement) {
-            if (activeFilters.brand === brand) {
-                activeFilters.brand = null;
-                chipElement.classList.remove('active');
-            } else {
-                // Remove active from all chips
-                document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-                activeFilters.brand = brand;
-                chipElement.classList.add('active');
-            }
-            filterProducts();
-        }
+        // Brand input enter key handler
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('brand-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    addBrandFilter();
+                }
+            });
+        });
 
         // Search input handler
         document.getElementById('search-input').addEventListener('input', function(e) {
@@ -348,8 +235,9 @@
                     name.includes(activeFilters.search) || 
                     brand.includes(activeFilters.search);
 
-                const matchesBrand = !activeFilters.brand || 
-                    brand === activeFilters.brand.toLowerCase();
+                // Match if no brands selected OR brand is in the selected brands list
+                const matchesBrand = activeFilters.brands.length === 0 || 
+                    activeFilters.brands.includes(brand);
 
                 if (matchesSearch && matchesBrand) {
                     item.style.display = '';
@@ -401,10 +289,9 @@
             filterProducts();
         }
 
-        // Initialize
+        // Initialize Materialize components
         document.addEventListener('DOMContentLoaded', function() {
             M.AutoInit();
-            renderBrandFilters();
         });
     </script>
 </body>
