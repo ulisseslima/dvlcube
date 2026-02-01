@@ -1,72 +1,323 @@
 <!DOCTYPE html>
-<html lang="en-US">
-
+<html lang="en">
 <head>
-  <title>dvlcube hub</title>
-  <%- include ("../../components/header.ejs") %>
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= product %> - Product Operations | DVLCube</title>
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/img/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16.png">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <!-- Materialize CSS -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Common Styles -->
+    <link rel="stylesheet" href="/css/common.css">
+    <style>
+        /* Price trends */
+        .price-high {
+            color: #d32f2f;
+            font-weight: 500;
+        }
+        
+        .price-low {
+            color: #388e3c;
+            font-weight: 500;
+        }
+        
+        .price-medium {
+            color: #f57c00;
+        }
 
+        /* Responsive table wrapper */
+        .table-wrapper {
+            background: var(--card-background);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .table-wrapper table {
+            margin: 0;
+        }
+
+        .table-wrapper table thead {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        }
+
+        .table-wrapper table thead th {
+            color: white !important;
+            font-weight: 500;
+            padding: 16px;
+        }
+
+        .table-wrapper table tbody tr {
+            transition: background-color 0.3s;
+        }
+
+        .table-wrapper table tbody tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .table-wrapper table tbody td {
+            padding: 14px 16px;
+        }
+
+        .table-wrapper table tbody td a {
+            color: var(--primary-color);
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .table-wrapper table tbody td a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        /* Stats grid for summary */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .summary-item {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .summary-item .label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .summary-item .value {
+            font-size: 24px;
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+
+        /* Page header */
+        .page-header {
+            background: var(--card-background);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .page-header h1 {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            color: var(--text-primary);
+            font-size: 28px;
+        }
+
+        .page-header h1 i {
+            margin-right: 12px;
+            color: var(--primary-color);
+        }
+
+        /* Filter section */
+        .filter-section {
+            margin-bottom: 16px;
+        }
+
+        .filter-section .input-field {
+            margin: 0;
+        }
+    </style>
+</head>
 <body>
-  <div class="container relative-fonts">
-    <div class="row">
-      <div class="col s12">
-        <a href="/products">
-          back
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-wrapper">
+            <a href="/" class="brand-logo" style="margin-left: 20px;">
+                <i class="material-icons">assessment</i>
+                DVLCube Products
+            </a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="/">Home</a></li>
+                <li><a href="/products">Products</a></li>
+                <li><a href="/tools">Tools</a></li>
+                <li><a href="https://github.com/dvlcube" target="_blank"><i class="material-icons left">code</i>GitHub</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <!-- Back Link -->
+        <a href="/products" class="back-link">
+            <i class="material-icons">arrow_back</i>
+            Back to Products
         </a>
 
-        <h1>
-          <%= product %> Product Ops
-        </h1>
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>
+                <i class="material-icons">timeline</i>
+                <%= product %> - Product Operations
+            </h1>
+        </div>
 
-        <table class="centered striped highlight">
-          <thead>
-            <tr>
-              <th>date</th>
-              <th>store</th>
-              <th>brand</th>
-              <th>product</th>
-              <th>price</th>
-              <th>amount</th>
-              <th>kilo</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% pops.forEach(op => { %>
-            <tr>
-              <td>
-                <%= df(op.created).format("YYYY-MM-DD") %>
-              </td>
-              <td>
-                <a href="<%= '/products/ops/store/'+op.store_name %>">
-                  <%= op.store_name %>
-                </a>
-              </td>
-              <td>
-                <a href="<%= '/products/ops/brand/'+op.brand %>">
-                  <%= op.brand %>
-                </a>
-              </td>
-              <td>
-                <a href="<%= '/products/ops/'+op.product_id %>">
-                  <%= op.product_name %>
-                </a>
-              </td>
-              <td>
-                <%= op.price %>
-              </td>
-              <td>
-                <%= op.amount %>
-              </td>
-              <td>
-                <%= Math.round(((1 * op.price / op.amount) + Number.EPSILON) * 100) / 100 %>
-              </td>
-            </tr>
-            <% }) %>
-          </tbody>
-        </table>
-      </div>
+        <!-- Summary Statistics -->
+        <div class="card-container">
+            <div class="card-header">
+                <h4><i class="material-icons">insights</i>Summary Statistics</h4>
+            </div>
+            <div class="summary-grid" id="summary-stats">
+                <div class="summary-item">
+                    <div class="label">Total Records</div>
+                    <div class="value"><%= pops.length %></div>
+                </div>
+                <div class="summary-item">
+                    <div class="label">Avg Price</div>
+                    <div class="value" id="avg-price">-</div>
+                </div>
+                <div class="summary-item">
+                    <div class="label">Min Price</div>
+                    <div class="value price-low" id="min-price">-</div>
+                </div>
+                <div class="summary-item">
+                    <div class="label">Max Price</div>
+                    <div class="value price-high" id="max-price">-</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search/Filter Section -->
+        <div class="search-section">
+            <h4><i class="material-icons">filter_list</i>Filter Operations</h4>
+            <div class="search-controls">
+                <div class="search-input-wrapper">
+                    <div class="input-field">
+                        <i class="material-icons prefix">search</i>
+                        <input type="text" id="search-input" placeholder="Search by store, brand, or product...">
+                        <label for="search-input">Search Operations</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Operations Table -->
+        <div class="table-wrapper">
+            <table class="striped highlight responsive-table" id="ops-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Store</th>
+                        <th>Brand</th>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Amount</th>
+                        <th>$/Kilo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% pops.forEach(op => { 
+                        const kiloPrice = Math.round(((1 * op.price / op.amount) + Number.EPSILON) * 100) / 100;
+                    %>
+                    <tr data-store="<%= op.store_name.toLowerCase() %>" 
+                        data-brand="<%= op.brand.toLowerCase() %>" 
+                        data-product="<%= op.product_name.toLowerCase() %>">
+                        <td><%= df(op.created).format("YYYY-MM-DD") %></td>
+                        <td>
+                            <a href="/products/ops/store/<%= op.store_name %>">
+                                <%= op.store_name %>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="/products/ops/brand/<%= op.brand %>">
+                                <%= op.brand %>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="/products/ops/<%= op.product_id %>">
+                                <%= op.product_name %>
+                            </a>
+                        </td>
+                        <td class="price-value">$<%= op.price %></td>
+                        <td><%= op.amount %></td>
+                        <td class="kilo-price">$<%= kiloPrice %></td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="empty-state" style="display: none; margin-top: 24px;">
+            <i class="material-icons">search_off</i>
+            <h5>No operations found</h5>
+            <p>Try adjusting your search criteria</p>
+        </div>
     </div>
-  </div>
-</body>
 
+    <!-- Materialize JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    
+    <script>
+        // Calculate statistics
+        function calculateStats() {
+            const prices = Array.from(document.querySelectorAll('.price-value')).map(el => 
+                parseFloat(el.textContent.replace('$', ''))
+            );
+            
+            if (prices.length === 0) return;
+            
+            const avg = prices.reduce((a, b) => a + b, 0) / prices.length;
+            const min = Math.min(...prices);
+            const max = Math.max(...prices);
+            
+            document.getElementById('avg-price').textContent = '$' + avg.toFixed(2);
+            document.getElementById('min-price').textContent = '$' + min.toFixed(2);
+            document.getElementById('max-price').textContent = '$' + max.toFixed(2);
+        }
+
+        // Search functionality
+        document.getElementById('search-input').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#ops-table tbody tr');
+            let visibleCount = 0;
+
+            rows.forEach(row => {
+                const store = row.dataset.store;
+                const brand = row.dataset.brand;
+                const product = row.dataset.product;
+
+                if (store.includes(searchTerm) || brand.includes(searchTerm) || product.includes(searchTerm)) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            // Show/hide empty state
+            const emptyState = document.getElementById('empty-state');
+            const tableWrapper = document.querySelector('.table-wrapper');
+            
+            if (visibleCount === 0) {
+                emptyState.style.display = 'block';
+                tableWrapper.style.display = 'none';
+            } else {
+                emptyState.style.display = 'none';
+                tableWrapper.style.display = 'block';
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            M.AutoInit();
+            calculateStats();
+        });
+    </script>
+</body>
 </html>

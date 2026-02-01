@@ -1,33 +1,411 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <%- include ("../../components/header.ejs") %>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products | DVLCube</title>
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/img/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16.png">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <!-- Materialize CSS -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Common Styles -->
+    <link rel="stylesheet" href="/css/common.css">
+    <style>
+
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: var(--card-background);
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: box-shadow 0.3s, transform 0.3s;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+
+        .product-card .product-name {
+            font-size: 20px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+
+        .product-card .product-name i {
+            margin-right: 8px;
+            color: var(--primary-color);
+            font-size: 24px;
+        }
+
+        .product-card .product-brand {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+
+        .product-card .product-id {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            color: var(--text-secondary);
+            background: #f5f5f5;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 16px;
+        }
+
+        .product-card .product-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .product-card .btn-small {
+            background-color: var(--primary-color);
+        }
+
+        .product-card .btn-small:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .product-card .btn-small.secondary {
+            background-color: #546e7a;
+        }
+
+        .product-card .btn-small.secondary:hover {
+            background-color: #455a64;
+        }
+
+
+
+        /* List View */
+        .products-list {
+            background: var(--card-background);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .product-list-item {
+            padding: 20px 24px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.3s;
+        }
+
+        .product-list-item:last-child {
+            border-bottom: none;
+        }
+
+        .product-list-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .product-list-item .product-info {
+            flex: 1;
+        }
+
+        .product-list-item .product-info h6 {
+            margin: 0 0 8px 0;
+            color: var(--text-primary);
+            font-size: 18px;
+        }
+
+        .product-list-item .product-info .product-meta {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .product-list-item .product-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .product-list-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .product-list-item .product-actions {
+                margin-top: 12px;
+                width: 100%;
+            }
+        }
+    </style>
 </head>
-
 <body>
-  <div class="container relative-fonts">
-    <div class="row">
-      <div class="col s12">
-        <h1>
-          Products
-        </h1>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-wrapper">
+            <a href="/" class="brand-logo" style="margin-left: 20px;">
+                <i class="material-icons">shopping_cart</i>
+                DVLCube Products
+            </a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="/">Home</a></li>
+                <li><a href="/tools">Tools</a></li>
+                <li><a href="https://github.com/dvlcube" target="_blank"><i class="material-icons left">code</i>GitHub</a></li>
+            </ul>
+        </div>
+    </nav>
 
-        <ul>
-          <% products.forEach(product => { %>
-            <li>
-              <a href="<%= 'products/ops/'+product.id %>">
-                <%= product.name %>
-              </a>
-              <a class="bold" href="<%= 'products/ops/brand/'+product.brand %>">
-                <%= product.brand %>
-              </a>
-            </li>
-          <% }) %>
-        </ul>
-      </div>
+    <div class="main-container">
+        <!-- Search Section -->
+        <div class="search-section">
+            <h4><i class="material-icons">search</i>Search & Filter</h4>
+            <div class="search-controls">
+                <div class="search-input-wrapper">
+                    <div class="input-field">
+                        <i class="material-icons prefix">search</i>
+                        <input type="text" id="search-input" placeholder="Search by name or brand...">
+                        <label for="search-input">Search Products</label>
+                    </div>
+                </div>
+                <div class="view-toggle">
+                    <button class="btn-small active" id="grid-view-btn" onclick="setView('grid')">
+                        <i class="material-icons">grid_view</i>
+                    </button>
+                    <button class="btn-small" id="list-view-btn" onclick="setView('list')">
+                        <i class="material-icons">view_list</i>
+                    </button>
+                </div>
+            </div>
+            <div class="filter-chips" id="brand-filters"></div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats-section">
+            <div class="stat-card">
+                <i class="material-icons">inventory_2</i>
+                <div class="stat-value" id="total-products"><%= products.length %></div>
+                <div class="stat-label">Total Products</div>
+            </div>
+            <div class="stat-card">
+                <i class="material-icons">label</i>
+                <div class="stat-value" id="total-brands">0</div>
+                <div class="stat-label">Brands</div>
+            </div>
+            <div class="stat-card">
+                <i class="material-icons">visibility</i>
+                <div class="stat-value" id="visible-products"><%= products.length %></div>
+                <div class="stat-label">Showing</div>
+            </div>
+        </div>
+
+        <!-- Products Grid View -->
+        <div class="products-grid" id="products-grid">
+            <% products.forEach(product => { %>
+            <div class="product-card" data-name="<%= product.name.toLowerCase() %>" data-brand="<%= product.brand.toLowerCase() %>">
+                <div class="product-name">
+                    <i class="material-icons">inventory_2</i>
+                    <%= product.name %>
+                </div>
+                <div class="product-brand"><%= product.brand %></div>
+                <div class="product-id">ID: <%= product.id %></div>
+                <div class="product-actions">
+                    <a href="<%= 'products/ops/'+product.id %>" class="btn-small waves-effect waves-light">
+                        <i class="material-icons left">info</i>
+                        Details
+                    </a>
+                    <a href="<%= 'products/ops/brand/'+product.brand %>" class="btn-small secondary waves-effect">
+                        <i class="material-icons left">label</i>
+                        Brand
+                    </a>
+                </div>
+            </div>
+            <% }) %>
+        </div>
+
+        <!-- Products List View (hidden by default) -->
+        <div class="products-list" id="products-list" style="display: none;">
+            <% products.forEach(product => { %>
+            <div class="product-list-item" data-name="<%= product.name.toLowerCase() %>" data-brand="<%= product.brand.toLowerCase() %>">
+                <div class="product-info">
+                    <h6><%= product.name %></h6>
+                    <div class="product-meta">
+                        <span class="product-brand" style="background: none; color: var(--primary-color); padding: 0; font-weight: 500;"><%= product.brand %></span>
+                        <span style="margin: 0 8px; color: var(--text-secondary);">•</span>
+                        <span style="color: var(--text-secondary);">ID: <%= product.id %></span>
+                    </div>
+                </div>
+                <div class="product-actions">
+                    <a href="<%= 'products/ops/'+product.id %>" class="btn-small waves-effect waves-light">
+                        <i class="material-icons left">info</i>
+                        Details
+                    </a>
+                    <a href="<%= 'products/ops/brand/'+product.brand %>" class="btn-small secondary waves-effect">
+                        <i class="material-icons left">label</i>
+                        Brand
+                    </a>
+                </div>
+            </div>
+            <% }) %>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="empty-state" style="display: none;">
+            <i class="material-icons">inbox</i>
+            <h5>No products found</h5>
+            <p>Try adjusting your search or filter criteria</p>
+        </div>
     </div>
-  </div>
-</body>
 
+    <!-- Materialize JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    
+    <script>
+        // Products data
+        const products = JSON.parse('<%- JSON.stringify(products) %>');
+        
+        // Extract unique brands
+        const brands = [...new Set(products.map(p => p.brand))].sort();
+        
+        // Update brand count
+        document.getElementById('total-brands').textContent = brands.length;
+
+        // Active filters - declare early to avoid initialization errors
+        let activeFilters = {
+            search: '',
+            brand: null,
+            view: 'grid'
+        };
+
+        // Render brand filter chips
+        function renderBrandFilters() {
+            const container = document.getElementById('brand-filters');
+            container.innerHTML = '<span style="color: var(--text-secondary); margin-right: 8px;">Brands:</span>';
+            
+            brands.forEach(brand => {
+                const chip = document.createElement('div');
+                chip.className = 'chip';
+                chip.textContent = brand;
+                chip.onclick = () => toggleBrandFilter(brand, chip);
+                container.appendChild(chip);
+            });
+        }
+
+        // Toggle brand filter
+        function toggleBrandFilter(brand, chipElement) {
+            if (activeFilters.brand === brand) {
+                activeFilters.brand = null;
+                chipElement.classList.remove('active');
+            } else {
+                // Remove active from all chips
+                document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+                activeFilters.brand = brand;
+                chipElement.classList.add('active');
+            }
+            filterProducts();
+        }
+
+        // Search input handler
+        document.getElementById('search-input').addEventListener('input', function(e) {
+            activeFilters.search = e.target.value.toLowerCase();
+            filterProducts();
+        });
+
+        // Filter products
+        function filterProducts() {
+            const gridCards = document.querySelectorAll('#products-grid .product-card');
+            const listItems = document.querySelectorAll('#products-list .product-list-item');
+            let visibleCount = 0;
+
+            const items = activeFilters.view === 'grid' ? gridCards : listItems;
+
+            items.forEach(item => {
+                const name = item.dataset.name;
+                const brand = item.dataset.brand;
+
+                const matchesSearch = !activeFilters.search || 
+                    name.includes(activeFilters.search) || 
+                    brand.includes(activeFilters.search);
+
+                const matchesBrand = !activeFilters.brand || 
+                    brand === activeFilters.brand.toLowerCase();
+
+                if (matchesSearch && matchesBrand) {
+                    item.style.display = '';
+                    visibleCount++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            // Update visible count
+            document.getElementById('visible-products').textContent = visibleCount;
+
+            // Show/hide empty state
+            const emptyState = document.getElementById('empty-state');
+            const gridView = document.getElementById('products-grid');
+            const listView = document.getElementById('products-list');
+
+            if (visibleCount === 0) {
+                emptyState.style.display = 'block';
+                gridView.style.display = 'none';
+                listView.style.display = 'none';
+            } else {
+                emptyState.style.display = 'none';
+                if (activeFilters.view === 'grid') {
+                    gridView.style.display = 'grid';
+                    listView.style.display = 'none';
+                } else {
+                    gridView.style.display = 'none';
+                    listView.style.display = 'block';
+                }
+            }
+        }
+
+        // Set view mode
+        function setView(view) {
+            activeFilters.view = view;
+            
+            const gridBtn = document.getElementById('grid-view-btn');
+            const listBtn = document.getElementById('list-view-btn');
+            
+            if (view === 'grid') {
+                gridBtn.classList.add('active');
+                listBtn.classList.remove('active');
+            } else {
+                listBtn.classList.add('active');
+                gridBtn.classList.remove('active');
+            }
+            
+            filterProducts();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            M.AutoInit();
+            renderBrandFilters();
+        });
+    </script>
+</body>
 </html>
