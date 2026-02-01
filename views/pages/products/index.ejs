@@ -16,6 +16,19 @@
     <link rel="stylesheet" href="/css/common.css">
     <!-- Products Styles -->
     <link rel="stylesheet" href="/css/products.css">
+    <style>
+        .user-info {
+            display: flex !important;
+            align-items: center;
+            gap: 8px;
+        }
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation -->
@@ -29,6 +42,17 @@
                 <li><a href="/">Home</a></li>
                 <li><a href="/tools">Tools</a></li>
                 <li><a href="https://github.com/dvlcube" target="_blank"><i class="material-icons left">code</i>GitHub</a></li>
+                <% if (user) { %>
+                <li>
+                    <a href="#!" class="user-info">
+                        <% if (user.photo) { %>
+                        <img src="<%= user.photo %>" alt="Profile" class="user-avatar">
+                        <% } %>
+                        <span><%= user.displayName %></span>
+                    </a>
+                </li>
+                <li><a href="/auth/logout"><i class="material-icons left">logout</i>Logout</a></li>
+                <% } %>
             </ul>
         </div>
     </nav>

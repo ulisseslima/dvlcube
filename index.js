@@ -3,6 +3,9 @@ const cool = require('cool-ascii-faces')
 const express = require('express')
 const path = require('path')
 const ngrok = require("@ngrok/ngrok")
+const session = require('express-session')
+const passport = require('passport')
+const GoogleStrategy = require('passport-google-oauth20').Strategy
 
 // const
 const PORT = process.env.PORT || 5000
@@ -14,6 +17,10 @@ const validate = require('./routes/validate')
 const generate = require('./routes/generate')
 const encode = require('./routes/encode')
 const tools = require('./routes/tools')
+const auth = require('./routes/auth')
+
+// middleware
+const { ensureAuthenticated } = require('./middleware/auth')
 
 // bots
 const { dlgramBot } = require('./bots/dlgram_bot')
@@ -38,6 +45,51 @@ async function startNgrok() {
     app.set('views', path.join(__dirname, 'views'))
     app.set('view engine', 'ejs')
     
+    // Session configuration
+    app.use(session({
+        secret: process.env.SESSION_SECRET || 'rotating-signing-key',
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            secure: process.env.NODE_ENV === 'production',
+            maxAge: 24 * 60 * 60 * 1000 // 24 hours
+        }
+    }))
+    
+    // Passport configuration
+    passport.use(new GoogleStrategy({
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL: '/auth/google/callback'
+    }, (accessToken, refreshToken, profile, done) => {
+        // For now, just return the profile. 
+        // In production, you might want to save the user to a database
+        const user = {
+            id: profile.id,
+            displayName: profile.displayName,
+            email: profile.emails?.[0]?.value,
+            photo: profile.photos?.[0]?.value
+        }
+        return done(null, user)
+    }))
+    
+    passport.serializeUser((user, done) => {
+        done(null, user)
+    })
+    
+    passport.deserializeUser((user, done) => {
+        done(null, user)
+    })
+    
+    app.use(passport.initialize())
+    app.use(passport.session())
+    
+    // Make user available to all views
+    app.use((req, res, next) => {
+        res.locals.user = req.user || null
+        next()
+    })
+    
     app.use((req, res, next) => {
         let client = req.headers['x-forwarded-for'] || req.socket.remoteAddress 
         console.log(`${new Date().toISOString()} - ${client}: ${req.ip} - ${req.method} ${req.url}`)
@@ -49,7 +101,11 @@ async function startNgrok() {
     app.get('/cool', (req, res) => res.send(cool()))
     app.use('/curse', curse)
     
-    app.use('/products', products)
+    // Auth routes (public)
+    app.use('/auth', auth)
+    
+    // Protected routes
+    app.use('/products', ensureAuthenticated, products)
 
     app.use('/validate', validate)
     app.use('/generate', generate)
