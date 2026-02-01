@@ -9,6 +9,20 @@ router.get('/cpf', async (req, res) => {
     res.json({"cpf": generateCpf()})
 })
 
+router.get('/title', async (req, res) => {
+    try {
+        let text = req.query.text
+        if (!text) return res.json({message: "empty", hint: "Use ?text=your title here&style=APA"})
+        
+        let style = (req.query.style || 'APA').toUpperCase()
+        let result = capitalizedTitle(text, style)
+        res.json({"title": result, "style": style})
+    } catch (err) {
+        console.error(err)
+        res.status(500).send("Error " + err)
+    }
+})
+
 module.exports = router
 
 function gera_random(n) {
@@ -106,4 +120,90 @@ function aleatorio() {
 	} else {
 		return ""+aleat;
 	}
+}
+
+/**
+ * Capitalizes a title according to the specified style guide rules
+ * @param {string} text - The text to capitalize
+ * @param {string} style - The style guide to use: APA, AP, Chicago, MLA, BB (Bluebook), AMA
+ * @returns {string} - The capitalized title
+ */
+function capitalizedTitle(text, style = 'APA') {
+    if (!text) return ''
+    
+    // Common lowercase words for different styles
+    const styleRules = {
+        // APA: Lowercase articles (a, an, the), short prepositions (under 4 letters), and coordinating conjunctions
+        APA: {
+            lowercase: ['a', 'an', 'the', 'and', 'but', 'or', 'nor', 'for', 'yet', 'so', 'as', 'at', 'by', 'for', 'in', 'of', 'on', 'to', 'up', 'via'],
+            capitalizeAfterColon: true
+        },
+        // AP: Similar to APA but prepositions under 4 letters are lowercase
+        AP: {
+            lowercase: ['a', 'an', 'the', 'and', 'but', 'or', 'nor', 'for', 'yet', 'so', 'as', 'at', 'by', 'for', 'in', 'of', 'on', 'to', 'up'],
+            capitalizeAfterColon: true
+        },
+        // Chicago: Lowercase articles, prepositions, and coordinating conjunctions regardless of length
+        CHICAGO: {
+            lowercase: ['a', 'an', 'the', 'and', 'but', 'or', 'nor', 'for', 'yet', 'so', 'as', 'at', 'by', 'for', 'in', 'of', 'on', 'to', 'up', 'via', 'against', 'between', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'from', 'off', 'over', 'under', 'again', 'further', 'then', 'once'],
+            capitalizeAfterColon: true
+        },
+        // MLA: Similar to Chicago
+        MLA: {
+            lowercase: ['a', 'an', 'the', 'and', 'but', 'or', 'nor', 'for', 'yet', 'so', 'as', 'at', 'by', 'for', 'in', 'of', 'on', 'to', 'up', 'via', 'against', 'between', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'from', 'off', 'over', 'under'],
+            capitalizeAfterColon: false
+        },
+        // Bluebook (legal): Capitalize articles, conjunctions, and prepositions of 4 letters or less
+        BB: {
+            lowercase: ['a', 'an', 'the', 'and', 'as', 'at', 'but', 'by', 'for', 'in', 'nor', 'of', 'on', 'or', 'so', 'to', 'up', 'yet'],
+            capitalizeAfterColon: true
+        },
+        // AMA (medical): Similar to APA
+        AMA: {
+            lowercase: ['a', 'an', 'the', 'and', 'but', 'or', 'nor', 'for', 'yet', 'so', 'as', 'at', 'by', 'for', 'in', 'of', 'on', 'to', 'up', 'via'],
+            capitalizeAfterColon: true
+        }
+    }
+    
+    const rules = styleRules[style.toUpperCase()] || styleRules.APA
+    const lowercaseWords = new Set(rules.lowercase)
+    
+    // Split by spaces while preserving multiple spaces
+    const words = text.split(/(\s+)/)
+    let isFirstWord = true
+    let afterColon = false
+    
+    const result = words.map((word, index) => {
+        // Skip whitespace
+        if (/^\s+$/.test(word)) return word
+        
+        const lowerWord = word.toLowerCase()
+        const endsWithColon = word.endsWith(':')
+        
+        let capitalizedWord
+        
+        // Always capitalize first word and last word
+        if (isFirstWord || index === words.length - 1) {
+            capitalizedWord = word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+        }
+        // Capitalize after colon if style requires it
+        else if (afterColon && rules.capitalizeAfterColon) {
+            capitalizedWord = word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+        }
+        // Check if word should be lowercase
+        else if (lowercaseWords.has(lowerWord.replace(/[^a-z]/g, ''))) {
+            capitalizedWord = lowerWord
+        }
+        // Capitalize other words
+        else {
+            capitalizedWord = word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+        }
+        
+        isFirstWord = false
+        afterColon = endsWithColon
+        
+        return capitalizedWord
+    })
+    
+    return result.join('')
 }

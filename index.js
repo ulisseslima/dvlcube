@@ -12,6 +12,8 @@ const curse = require('./routes/curse')
 const products = require('./routes/products')
 const validate = require('./routes/validate')
 const generate = require('./routes/generate')
+const encode = require('./routes/encode')
+const tools = require('./routes/tools')
 
 // bots
 const { dlgramBot } = require('./bots/dlgram_bot')
@@ -51,12 +53,25 @@ async function startNgrok() {
 
     app.use('/validate', validate)
     app.use('/generate', generate)
+    app.use('/encode', encode)
+    app.use('/tools', tools)
 
     /////////////////////// START /////////////////
     app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
             
     /////////////////////// BOTS /////////////////
-    app.use(await dlgramBot.createWebhook({ domain: ngrokUrl || process.env.DOMAIN }))
+    if (process.env.TOKEN_DLGRAM_BOT) {
+        try {
+            // prefer a bare domain for webhook registration (strip protocol if present)
+            const domain = (ngrokUrl || process.env.DOMAIN || '')
+                .toString()
+            app.use(await dlgramBot.createWebhook({ domain }))
+        } catch (err) {
+            console.error('Failed to create dlgram webhook:', err)
+        }
+    } else {
+        console.log('TOKEN_DLGRAM_BOT not set — skipping dlgram webhook setup')
+    }
     
     /////////////////////// SECURITY /////////////////
     // routes require auth header starting from here:
