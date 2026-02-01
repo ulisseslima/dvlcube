@@ -64,6 +64,10 @@ async function startNgrok() {
         }
         
         const app = express()
+    
+    // Trust proxy - required for Heroku to correctly detect HTTPS
+    app.set('trust proxy', 1)
+    
     app.use(express.static(path.join(__dirname, 'public')))
     // required to receive request bodies:
     app.use(express.json()) // or app.use(bodyParser.json())
@@ -82,10 +86,15 @@ async function startNgrok() {
     }))
     
     // Passport configuration
+    const callbackURL = process.env.GOOGLE_CALLBACK_URL || 
+                       (process.env.NODE_ENV === 'production' 
+                           ? 'https://www.dvlcube.com/auth/google/callback'
+                           : '/auth/google/callback')
+    
     passport.use(new GoogleStrategy({
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: '/auth/google/callback'
+        callbackURL: callbackURL
     }, (accessToken, refreshToken, profile, done) => {
         // For now, just return the profile. 
         // In production, you might want to save the user to a database
