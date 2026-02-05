@@ -98,7 +98,7 @@
         const MAX_HISTORY = 10;
 
         // Select a category
-        function selectCategory(categoryKey) {
+        function selectCategory(categoryKey, updateHash = true) {
             const category = routeMetadata[categoryKey];
             if (!category) return;
 
@@ -119,7 +119,25 @@
 
             // Render routes
             renderRoutes(category.routes);
+            
+            // Update URL hash
+            if (updateHash) {
+                window.location.hash = categoryKey;
+            }
         }
+        
+        // Load category from URL hash
+        function loadCategoryFromHash() {
+            const hash = window.location.hash.substring(1); // Remove '#'
+            if (hash && routeMetadata[hash]) {
+                selectCategory(hash, false);
+            }
+        }
+        
+        // Handle browser back/forward
+        window.addEventListener('hashchange', () => {
+            loadCategoryFromHash();
+        });
 
         // Render route cards
         function renderRoutes(routes) {
@@ -130,6 +148,9 @@
                 const card = document.createElement('div');
                 card.className = 'route-card';
                 card.id = `route-${index}`;
+
+                const isSandbox = route.path.startsWith('/sandbox/');
+                const language = isSandbox ? route.path.split('/').pop() : null;
 
                 let paramsHtml = '';
                 route.params.forEach(param => {
@@ -169,12 +190,34 @@
                     }
                 });
 
+                // Add saved snippets section and save/clear buttons for sandbox routes
+                const snippetControls = isSandbox ? `
+                    <div style="margin-bottom: 15px; border: 1px solid #e0e0e0; border-radius: 4px; padding: 10px; background: #fafafa;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="toggleSnippets(${index})">
+                            <strong style="color: #666;"><i class="material-icons" style="vertical-align: middle; font-size: 18px;">snippet_folder</i> Saved Snippets</strong>
+                            <i class="material-icons" id="snippets-toggle-${index}" style="color: #999;">expand_more</i>
+                        </div>
+                        <div id="snippets-list-${index}" style="display: none; margin-top: 10px; max-height: 200px; overflow-y: auto;">
+                            <!-- Snippets will be populated here -->
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <button type="button" class="btn-small waves-effect grey" onclick="saveSnippet(${index}, '${language}')">
+                            <i class="material-icons left">save</i>Save Snippet
+                        </button>
+                        <button type="button" class="btn-small waves-effect grey" onclick="clearTextarea(${index})">
+                            <i class="material-icons left">delete</i>Clear
+                        </button>
+                    </div>
+                ` : '';
+
                 card.innerHTML = `
                     <h5>${route.name}</h5>
                     <p class="route-description">${route.description}</p>
                     <div class="route-path">${route.method} ${route.path}</div>
-                    <form onsubmit="callRoute(event, ${index}, '${route.path}')">
+                    <form onsubmit="callRoute(event, ${index}, '${route.path}', ${isSandbox})">
                         ${paramsHtml}
+                        ${snippetControls}
                         <button type="submit" class="btn waves-effect waves-light">
                             <i class="material-icons left">send</i>
                             Execute
@@ -203,10 +246,19 @@
 
             // Initialize Materialize selects
             M.FormSelect.init(document.querySelectorAll('select'));
+            
+            // Load and render snippets for sandbox routes
+            routes.forEach((route, index) => {
+                const isSandbox = route.path.startsWith('/sandbox/');
+                if (isSandbox) {
+                    const language = route.path.split('/').pop();
+                    renderSnippetsList(index, language);
+                }
+            });
         }
 
         // Call a route
-        async function callRoute(event, index, path) {
+        async function callRoute(event, index, path, isSandbox = false) {
             event.preventDefault();
 
             const form = event.target;
@@ -249,10 +301,16 @@
                 const resultContainer = document.getElementById(`result-${index}`);
                 const resultBox = document.getElementById(`result-box-${index}`);
                 
-                resultBox.textContent = JSON.stringify(data, null, 2);
+                // Format output based on whether it's a sandbox route
+                if (isSandbox) {
+                    resultBox.innerHTML = formatSandboxOutput(data);
+                } else {
+                    resultBox.textContent = JSON.stringify(data, null, 2);
+                }
+                
                 resultBox.classList.remove('error');
                 
-                if (!response.ok) {
+                if (!response.ok || (isSandbox && !data.success)) {
                     resultBox.classList.add('error');
                 }
                 
@@ -271,6 +329,63 @@
             } finally {
                 spinner.classList.remove('active', 'show');
             }
+        }
+
+        // Format sandbox execution output
+        function formatSandboxOutput(data) {
+            const statusIcon = data.success ? '✅' : '❌';
+            const statusText = data.success ? 'Success' : 'Failed';
+            const statusColor = data.success ? '#4caf50' : '#f44336';
+            
+            let html = `
+                <div style="margin-bottom: 15px; padding: 10px; background: ${data.success ? '#e8f5e9' : '#ffebee'}; border-left: 4px solid ${statusColor};">
+                    <strong>${statusIcon} ${statusText}</strong>
+                    ${data.timeout ? '<span style="color: #ff9800; margin-left: 10px;">⏱️ Timeout</span>' : ''}
+                    <span style="float: right; color: #666;">⏱ ${data.executionTime}</span>
+                </div>
+            `;
+
+            if (data.phase) {
+                html += `<div style="margin-bottom: 10px;"><strong>Phase:</strong> ${data.phase}</div>`;
+            }
+
+            if (data.stdout && data.stdout.trim()) {
+                html += `
+                    <div style="margin-bottom: 15px;">
+                        <strong style="color: #2196f3;">📤 Output:</strong>
+                        <pre style="background: #263238; color: #aed581; padding: 12px; border-radius: 4px; margin-top: 5px; overflow-x: auto;">${escapeHtml(data.stdout)}</pre>
+                    </div>
+                `;
+            }
+
+            if (data.stderr && data.stderr.trim()) {
+                html += `
+                    <div style="margin-bottom: 15px;">
+                        <strong style="color: #f44336;">⚠️ Error Output:</strong>
+                        <pre style="background: #263238; color: #ef5350; padding: 12px; border-radius: 4px; margin-top: 5px; overflow-x: auto;">${escapeHtml(data.stderr)}</pre>
+                    </div>
+                `;
+            }
+
+            if (data.output && !data.stdout && !data.stderr) {
+                html += `
+                    <div style="margin-bottom: 15px;">
+                        <strong>Output:</strong>
+                        <pre style="background: #263238; color: #fff; padding: 12px; border-radius: 4px; margin-top: 5px; overflow-x: auto;">${escapeHtml(data.output)}</pre>
+                    </div>
+                `;
+            }
+
+            html += `<div style="font-size: 0.85em; color: #666;"><strong>Exit Code:</strong> ${data.exitCode}</div>`;
+
+            return html;
+        }
+
+        // Helper to escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
 
         // Copy result to clipboard
@@ -354,7 +469,167 @@
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             M.AutoInit();
+            
+            // Load category from URL hash if present
+            loadCategoryFromHash();
         });
+
+        // Save code snippet to localStorage
+        function saveSnippet(index, language) {
+            const textarea = document.querySelector(`#route-${index} textarea[data-param="code"]`);
+            if (!textarea || !textarea.value.trim()) {
+                M.toast({html: 'No code to save!', classes: 'rounded orange'});
+                return;
+            }
+            
+            const code = textarea.value;
+            
+            // Prompt for tags
+            const tagsInput = prompt('Enter tags for this snippet (comma-separated):', '');
+            if (tagsInput === null) return; // User cancelled
+            
+            const tags = tagsInput.split(',').map(t => t.trim()).filter(t => t);
+            
+            // Get existing snippets
+            const snippets = getSnippets(language);
+            
+            // Add new snippet with timestamp
+            snippets.push({
+                id: Date.now(),
+                code: code,
+                tags: tags,
+                timestamp: new Date().toISOString()
+            });
+            
+            // Save to localStorage
+            localStorage.setItem(`sandbox-snippets-${language}`, JSON.stringify(snippets));
+            
+            M.toast({html: `${language} snippet saved with ${tags.length} tag(s)!`, classes: 'rounded green'});
+            
+            // Refresh snippets list
+            renderSnippetsList(index, language);
+        }
+
+        // Get snippets for a language
+        function getSnippets(language) {
+            const stored = localStorage.getItem(`sandbox-snippets-${language}`);
+            return stored ? JSON.parse(stored) : [];
+        }
+
+        // Clear textarea only
+        function clearTextarea(index) {
+            const textarea = document.querySelector(`#route-${index} textarea[data-param="code"]`);
+            if (textarea) {
+                textarea.value = '';
+                M.toast({html: 'Textarea cleared!', classes: 'rounded'});
+            }
+        }
+
+        // Toggle snippets section
+        function toggleSnippets(index) {
+            const list = document.getElementById(`snippets-list-${index}`);
+            const icon = document.getElementById(`snippets-toggle-${index}`);
+            
+            if (list.style.display === 'none') {
+                list.style.display = 'block';
+                icon.textContent = 'expand_less';
+            } else {
+                list.style.display = 'none';
+                icon.textContent = 'expand_more';
+            }
+        }
+
+        // Render snippets list
+        function renderSnippetsList(index, language) {
+            const listContainer = document.getElementById(`snippets-list-${index}`);
+            if (!listContainer) return;
+            
+            const snippets = getSnippets(language);
+            
+            if (snippets.length === 0) {
+                listContainer.innerHTML = '<div style="color: #999; font-style: italic; padding: 10px;">No saved snippets yet</div>';
+                return;
+            }
+            
+            listContainer.innerHTML = '';
+            
+            snippets.reverse().forEach((snippet) => {
+                const div = document.createElement('div');
+                div.className = 'snippet-item';
+                div.style.cssText = 'border: 1px solid #e0e0e0; border-radius: 4px; padding: 10px; margin-bottom: 8px; background: white;';
+                
+                const date = new Date(snippet.timestamp).toLocaleString();
+                const tagsHtml = snippet.tags.length > 0 
+                    ? snippet.tags.map(tag => `<span style="background: #e3f2fd; color: #1976d2; padding: 2px 8px; border-radius: 3px; font-size: 0.85em; margin-right: 4px;">${tag}</span>`).join('')
+                    : '<span style="color: #999; font-style: italic;">no tags</span>';
+                
+                const codePreview = snippet.code.substring(0, 60) + (snippet.code.length > 60 ? '...' : '');
+                
+                div.innerHTML = `
+                    <div style="margin-bottom: 5px;">
+                        ${tagsHtml}
+                        <span style="float: right; color: #999; font-size: 0.8em;">${date}</span>
+                    </div>
+                    <div style="font-family: monospace; font-size: 0.85em; color: #555; margin-bottom: 8px;">${escapeHtml(codePreview)}</div>
+                    <div>
+                        <button class="btn-small waves-effect blue" onclick="loadSnippet(${index}, ${snippet.id}, '${language}')" style="margin-right: 5px;">
+                            <i class="material-icons left" style="font-size: 16px;">input</i>Load
+                        </button>
+                        <button class="btn-small waves-effect red" onclick="deleteSnippet(${index}, ${snippet.id}, '${language}')">
+                            <i class="material-icons left" style="font-size: 16px;">delete</i>Delete
+                        </button>
+                    </div>
+                `;
+                
+                listContainer.appendChild(div);
+            });
+        }
+
+        // Load a snippet into the textarea
+        function loadSnippet(index, snippetId, language) {
+            const snippets = getSnippets(language);
+            const snippet = snippets.find(s => s.id === snippetId);
+            
+            if (snippet) {
+                const textarea = document.querySelector(`#route-${index} textarea[data-param="code"]`);
+                if (textarea) {
+                    textarea.value = snippet.code;
+                    M.textareaAutoResize(textarea);
+                    M.toast({html: 'Snippet loaded!', classes: 'rounded green'});
+                    
+                    // Auto-collapse the snippets section
+                    const list = document.getElementById(`snippets-list-${index}`);
+                    const icon = document.getElementById(`snippets-toggle-${index}`);
+                    if (list && icon) {
+                        list.style.display = 'none';
+                        icon.textContent = 'expand_more';
+                    }
+                }
+            }
+        }
+
+        // Delete a snippet
+        function deleteSnippet(index, snippetId, language) {
+            if (!confirm('Are you sure you want to delete this snippet?')) return;
+            
+            let snippets = getSnippets(language);
+            snippets = snippets.filter(s => s.id !== snippetId);
+            
+            localStorage.setItem(`sandbox-snippets-${language}`, JSON.stringify(snippets));
+            M.toast({html: 'Snippet deleted!', classes: 'rounded'});
+            
+            renderSnippetsList(index, language);
+        }
+
+        // Clear code snippet from localStorage and textarea
+        function clearSnippet(index, language) {
+            const textarea = document.querySelector(`#route-${index} textarea[data-param="code"]`);
+            if (textarea) {
+                textarea.value = '';
+                localStorage.removeItem(`sandbox-${language}`);
+                M.toast({html: `${language} snippet cleared!`, classes: 'rounded'});
+            }
+        }
     </script>
 </body>
 </html>

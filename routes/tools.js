@@ -40,37 +40,56 @@ const routeMetadata = {
         icon: 'code',
         routes: [
             { path: '/encode/url', method: 'GET', name: 'URL Encode', description: 'Encode text for URLs', params: [
-                { name: 'text', type: 'text', required: true, placeholder: 'Enter text to encode' }
+                { name: 'text', type: 'textarea', required: true, placeholder: 'Enter text to encode' }
             ]},
             { path: '/encode/url/decode', method: 'GET', name: 'URL Decode', description: 'Decode URL-encoded text', params: [
-                { name: 'text', type: 'text', required: true, placeholder: 'Enter URL-encoded text' }
+                { name: 'text', type: 'textarea', required: true, placeholder: 'Enter URL-encoded text' }
             ]},
             { path: '/encode/base64', method: 'GET', name: 'Base64 Encode', description: 'Encode text to Base64', params: [
-                { name: 'text', type: 'text', required: true, placeholder: 'Enter text to encode' }
+                { name: 'text', type: 'textarea', required: true, placeholder: 'Enter text to encode' }
             ]},
             { path: '/encode/base64/decode', method: 'GET', name: 'Base64 Decode', description: 'Decode Base64 text', params: [
-                { name: 'text', type: 'text', required: true, placeholder: 'Enter Base64 text' }
+                { name: 'text', type: 'textarea', required: true, placeholder: 'Enter Base64 text' }
             ]},
             { path: '/encode/html', method: 'GET', name: 'HTML Encode', description: 'Encode HTML entities', params: [
-                { name: 'text', type: 'text', required: true, placeholder: 'Enter HTML to encode' }
+                { name: 'text', type: 'textarea', required: true, placeholder: 'Enter HTML to encode' }
             ]},
             { path: '/encode/html/decode', method: 'GET', name: 'HTML Decode', description: 'Decode HTML entities', params: [
-                { name: 'text', type: 'text', required: true, placeholder: 'Enter encoded HTML' }
+                { name: 'text', type: 'textarea', required: true, placeholder: 'Enter encoded HTML' }
             ]},
             { path: '/encode/hex', method: 'GET', name: 'Hex Encode', description: 'Encode text to hexadecimal', params: [
-                { name: 'text', type: 'text', required: true, placeholder: 'Enter text to encode' }
+                { name: 'text', type: 'textarea', required: true, placeholder: 'Enter text to encode' }
             ]},
             { path: '/encode/hex/decode', method: 'GET', name: 'Hex Decode', description: 'Decode hexadecimal to text', params: [
-                { name: 'text', type: 'text', required: true, placeholder: 'Enter hex string' }
+                { name: 'text', type: 'textarea', required: true, placeholder: 'Enter hex string' }
             ]},
             { path: '/encode/unicode', method: 'GET', name: 'Unicode Encode', description: 'Convert text to Unicode code points', params: [
-                { name: 'text', type: 'text', required: true, placeholder: 'Enter text to encode' }
+                { name: 'text', type: 'textarea', required: true, placeholder: 'Enter text to encode' }
             ]},
             { path: '/encode/unicode/decode', method: 'GET', name: 'Unicode Decode', description: 'Convert Unicode code points to text', params: [
-                { name: 'text', type: 'text', required: true, placeholder: 'U+0048 U+0065 U+006C U+006C U+006F' }
+                { name: 'text', type: 'textarea', required: true, placeholder: 'U+0048 U+0065 U+006C U+006C U+006F' }
             ]},
             { path: '/encode/jwt/decode', method: 'GET', name: 'JWT Decode', description: 'Decode JWT token (without verification)', params: [
                 { name: 'text', type: 'textarea', required: true, placeholder: 'Enter JWT token' }
+            ]}
+        ]
+    },
+    sandbox: {
+        name: 'Sandbox',
+        description: 'Test and run code snippets in various languages',
+        icon: 'terminal',
+        routes: [
+            { path: '/sandbox/python', method: 'GET', name: 'Run Python', description: 'Execute Python 3 code and see the output', params: [
+                { name: 'code', type: 'textarea', required: true, placeholder: 'print(“Hello, World!”)' }
+            ]},
+            { path: '/sandbox/javascript', method: 'GET', name: 'Run JavaScript', description: 'Execute JavaScript (Node.js) code and see the output', params: [
+                { name: 'code', type: 'textarea', required: true, placeholder: 'console.log(“Hello, World!”);' }
+            ]},
+            { path: '/sandbox/typescript', method: 'GET', name: 'Run TypeScript', description: 'Execute TypeScript code and see the output', params: [
+                { name: 'code', type: 'textarea', required: true, placeholder: 'const greeting: string = “Hello, World!”; console.log(greeting);' }
+            ]},
+            { path: '/sandbox/java', method: 'GET', name: 'Run Java', description: 'Compile and execute Java code (class name auto-detected)', params: [
+                { name: 'code', type: 'textarea', required: true, placeholder: 'public class Main { public static void main(String[] args) { System.out.println(“Hello, World!”); } }' }
             ]}
         ]
     }
