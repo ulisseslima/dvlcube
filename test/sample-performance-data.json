@@ -1,0 +1,399 @@
+{
+    "projectId": "sindicancias-fyzjpu",
+    "startTime": "2026-01-26T17:10:23.841Z",
+    "endTime": "2026-02-05T17:10:23.841Z",
+    "functions": [
+        {
+            "functionName": "notificationEvent",
+            "executionCount": 50,
+            "errorCount": 0,
+            "errorRate": 0,
+            "executionTime": {
+                "min": 91.122,
+                "max": 717.517,
+                "avg": 217.28,
+                "p50": 695.773,
+                "p95": 841.885,
+                "p99": 841.885
+            },
+            "timeSeries": [
+                {
+                    "timestamp": "2026-01-28T13:10:23.000Z",
+                    "executionCount": 2,
+                    "errorCount": 0,
+                    "avgExecutionTime": 415.494
+                },
+                {
+                    "timestamp": "2026-01-28T14:10:23.000Z",
+                    "executionCount": 2,
+                    "errorCount": 0,
+                    "avgExecutionTime": 358.258
+                },
+                {
+                    "timestamp": "2026-01-28T19:10:23.000Z",
+                    "executionCount": 1,
+                    "errorCount": 0,
+                    "avgExecutionTime": 717.517
+                },
+                {
+                    "timestamp": "2026-01-28T20:10:23.000Z",
+                    "executionCount": 2,
+                    "errorCount": 0,
+                    "avgExecutionTime": 387.575
+                },
+                {
+                    "timestamp": "2026-01-29T04:10:23.000Z",
+                    "executionCount": 3,
+                    "errorCount": 0,
+                    "avgExecutionTime": 220.276
+                },
+                {
+                    "timestamp": "2026-01-29T05:10:23.000Z",
+                    "executionCount": 4,
+                    "errorCount": 0,
+                    "avgExecutionTime": 243.235
+                },
+                {
+                    "timestamp": "2026-01-29T06:10:23.000Z",
+                    "executionCount": 8,
+                    "errorCount": 0,
+                    "avgExecutionTime": 171.858
+                },
+                {
+                    "timestamp": "2026-01-29T18:10:23.000Z",
+                    "executionCount": 4,
+                    "errorCount": 0,
+                    "avgExecutionTime": 275.806
+                },
+                {
+                    "timestamp": "2026-01-29T20:10:23.000Z",
+                    "executionCount": 3,
+                    "errorCount": 0,
+                    "avgExecutionTime": 403.759
+                },
+                {
+                    "timestamp": "2026-01-29T21:10:23.000Z",
+                    "executionCount": 20,
+                    "errorCount": 0,
+                    "avgExecutionTime": 91.122
+                },
+                {
+                    "timestamp": "2026-01-30T20:10:23.000Z",
+                    "executionCount": 1,
+                    "errorCount": 0,
+                    "avgExecutionTime": 678.265
+                }
+            ]
+        },
+        {
+            "functionName": "processEmailDelivery",
+            "executionCount": 320,
+            "errorCount": 0,
+            "errorRate": 0,
+            "executionTime": {
+                "min": 1378.105,
+                "max": 5000.248,
+                "avg": 2381.626,
+                "p50": 4255.283,
+                "p95": 11037.109,
+                "p99": 12140.819
+            },
+            "timeSeries": [
+                {
+                    "timestamp": "2026-01-28T14:10:23.000Z",
+                    "executionCount": 8,
+                    "errorCount": 0,
+                    "avgExecutionTime": 2825.137
+                },
+                {
+                    "timestamp": "2026-01-28T18:10:23.000Z",
+                    "executionCount": 96,
+                    "errorCount": 0,
+                    "avgExecutionTime": 3815.372
+                },
+                {
+                    "timestamp": "2026-01-28T19:10:23.000Z",
+                    "executionCount": 4,
+                    "errorCount": 0,
+                    "avgExecutionTime": 5000.248
+                },
+                {
+                    "timestamp": "2026-01-28T20:10:23.000Z",
+                    "executionCount": 8,
+                    "errorCount": 0,
+                    "avgExecutionTime": 2290.313
+                },
+                {
+                    "timestamp": "2026-01-29T04:10:23.000Z",
+                    "executionCount": 12,
+                    "errorCount": 0,
+                    "avgExecutionTime": 2109.014
+                },
+                {
+                    "timestamp": "2026-01-29T05:10:23.000Z",
+                    "executionCount": 16,
+                    "errorCount": 0,
+                    "avgExecutionTime": 1469.92
+                },
+                {
+                    "timestamp": "2026-01-29T06:10:23.000Z",
+                    "executionCount": 32,
+                    "errorCount": 0,
+                    "avgExecutionTime": 1438.376
+                },
+                {
+                    "timestamp": "2026-01-29T18:10:23.000Z",
+                    "executionCount": 20,
+                    "errorCount": 0,
+                    "avgExecutionTime": 2266.803
+                },
+                {
+                    "timestamp": "2026-01-29T20:10:23.000Z",
+                    "executionCount": 20,
+                    "errorCount": 0,
+                    "avgExecutionTime": 2013.913
+                },
+                {
+                    "timestamp": "2026-01-29T21:10:23.000Z",
+                    "executionCount": 100,
+                    "errorCount": 0,
+                    "avgExecutionTime": 1378.105
+                },
+                {
+                    "timestamp": "2026-01-30T20:10:23.000Z",
+                    "executionCount": 4,
+                    "errorCount": 0,
+                    "avgExecutionTime": 4160.073
+                }
+            ]
+        },
+        {
+            "functionName": "processNotificationEvent",
+            "executionCount": 39,
+            "errorCount": 0,
+            "errorRate": 0,
+            "executionTime": {
+                "min": 739.179,
+                "max": 8142.838,
+                "avg": 4788.72,
+                "p50": 9121.577,
+                "p95": 9121.577,
+                "p99": 9121.577
+            },
+            "timeSeries": [
+                {
+                    "timestamp": "2026-01-28T13:10:23.000Z",
+                    "executionCount": 3,
+                    "errorCount": 0,
+                    "avgExecutionTime": 1836.128
+                },
+                {
+                    "timestamp": "2026-01-28T14:10:23.000Z",
+                    "executionCount": 3,
+                    "errorCount": 0,
+                    "avgExecutionTime": 739.179
+                },
+                {
+                    "timestamp": "2026-01-28T19:10:23.000Z",
+                    "executionCount": 1,
+                    "errorCount": 0,
+                    "avgExecutionTime": 3191.295
+                },
+                {
+                    "timestamp": "2026-01-28T20:10:23.000Z",
+                    "executionCount": 2,
+                    "errorCount": 0,
+                    "avgExecutionTime": 3977.341
+                },
+                {
+                    "timestamp": "2026-01-29T04:10:23.000Z",
+                    "executionCount": 3,
+                    "errorCount": 0,
+                    "avgExecutionTime": 3039.934
+                },
+                {
+                    "timestamp": "2026-01-29T05:10:23.000Z",
+                    "executionCount": 4,
+                    "errorCount": 0,
+                    "avgExecutionTime": 4468.502
+                },
+                {
+                    "timestamp": "2026-01-29T06:10:23.000Z",
+                    "executionCount": 8,
+                    "errorCount": 0,
+                    "avgExecutionTime": 3690.827
+                },
+                {
+                    "timestamp": "2026-01-29T18:10:23.000Z",
+                    "executionCount": 2,
+                    "errorCount": 0,
+                    "avgExecutionTime": 8142.838
+                },
+                {
+                    "timestamp": "2026-01-29T20:10:23.000Z",
+                    "executionCount": 2,
+                    "errorCount": 0,
+                    "avgExecutionTime": 7999.66
+                },
+                {
+                    "timestamp": "2026-01-29T21:10:23.000Z",
+                    "executionCount": 10,
+                    "errorCount": 0,
+                    "avgExecutionTime": 6838.084
+                },
+                {
+                    "timestamp": "2026-01-30T20:10:23.000Z",
+                    "executionCount": 1,
+                    "errorCount": 0,
+                    "avgExecutionTime": 5441.626
+                }
+            ]
+        },
+        {
+            "functionName": "processPushDelivery",
+            "executionCount": 239,
+            "errorCount": 0,
+            "errorRate": 0,
+            "executionTime": {
+                "min": 127.421,
+                "max": 891.502,
+                "avg": 223.262,
+                "p50": 926.074,
+                "p95": 1018.681,
+                "p99": 1120.549
+            },
+            "timeSeries": [
+                {
+                    "timestamp": "2026-01-28T20:10:23.000Z",
+                    "executionCount": 5,
+                    "errorCount": 0,
+                    "avgExecutionTime": 891.502
+                },
+                {
+                    "timestamp": "2026-01-29T04:10:23.000Z",
+                    "executionCount": 15,
+                    "errorCount": 0,
+                    "avgExecutionTime": 323.974
+                },
+                {
+                    "timestamp": "2026-01-29T05:10:23.000Z",
+                    "executionCount": 20,
+                    "errorCount": 0,
+                    "avgExecutionTime": 367.386
+                },
+                {
+                    "timestamp": "2026-01-29T06:10:23.000Z",
+                    "executionCount": 40,
+                    "errorCount": 0,
+                    "avgExecutionTime": 257.579
+                },
+                {
+                    "timestamp": "2026-01-29T18:10:23.000Z",
+                    "executionCount": 22,
+                    "errorCount": 0,
+                    "avgExecutionTime": 220.143
+                },
+                {
+                    "timestamp": "2026-01-29T20:10:23.000Z",
+                    "executionCount": 22,
+                    "errorCount": 0,
+                    "avgExecutionTime": 236.692
+                },
+                {
+                    "timestamp": "2026-01-29T21:10:23.000Z",
+                    "executionCount": 110,
+                    "errorCount": 0,
+                    "avgExecutionTime": 127.421
+                },
+                {
+                    "timestamp": "2026-01-30T20:10:23.000Z",
+                    "executionCount": 5,
+                    "errorCount": 0,
+                    "avgExecutionTime": 484.17
+                }
+            ]
+        },
+        {
+            "functionName": "processWhatsAppDelivery",
+            "executionCount": 59,
+            "errorCount": 0,
+            "errorRate": 0,
+            "executionTime": {
+                "min": 534.664,
+                "max": 1936.391,
+                "avg": 801.753,
+                "p50": 1985.121,
+                "p95": 2183.633,
+                "p99": 2183.633
+            },
+            "timeSeries": [
+                {
+                    "timestamp": "2026-01-28T14:10:23.000Z",
+                    "executionCount": 2,
+                    "errorCount": 0,
+                    "avgExecutionTime": 1323.075
+                },
+                {
+                    "timestamp": "2026-01-28T18:10:23.000Z",
+                    "executionCount": 24,
+                    "errorCount": 0,
+                    "avgExecutionTime": 534.664
+                },
+                {
+                    "timestamp": "2026-01-28T19:10:23.000Z",
+                    "executionCount": 1,
+                    "errorCount": 0,
+                    "avgExecutionTime": 1936.391
+                },
+                {
+                    "timestamp": "2026-01-28T20:10:23.000Z",
+                    "executionCount": 2,
+                    "errorCount": 0,
+                    "avgExecutionTime": 1229.224
+                },
+                {
+                    "timestamp": "2026-01-29T04:10:23.000Z",
+                    "executionCount": 3,
+                    "errorCount": 0,
+                    "avgExecutionTime": 840.784
+                },
+                {
+                    "timestamp": "2026-01-29T05:10:23.000Z",
+                    "executionCount": 4,
+                    "errorCount": 0,
+                    "avgExecutionTime": 645.314
+                },
+                {
+                    "timestamp": "2026-01-29T06:10:23.000Z",
+                    "executionCount": 8,
+                    "errorCount": 0,
+                    "avgExecutionTime": 642.802
+                },
+                {
+                    "timestamp": "2026-01-29T18:10:23.000Z",
+                    "executionCount": 2,
+                    "errorCount": 0,
+                    "avgExecutionTime": 1216.977
+                },
+                {
+                    "timestamp": "2026-01-29T20:10:23.000Z",
+                    "executionCount": 2,
+                    "errorCount": 0,
+                    "avgExecutionTime": 1140.184
+                },
+                {
+                    "timestamp": "2026-01-29T21:10:23.000Z",
+                    "executionCount": 10,
+                    "errorCount": 0,
+                    "avgExecutionTime": 1032.409
+                },
+                {
+                    "timestamp": "2026-01-30T20:10:23.000Z",
+                    "executionCount": 1,
+                    "errorCount": 0,
+                    "avgExecutionTime": 1576.973
+                }
+            ]
+        }
+    ]
+}

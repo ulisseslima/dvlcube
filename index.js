@@ -18,6 +18,7 @@ const generate = require('./routes/generate')
 const encode = require('./routes/encode')
 const tools = require('./routes/tools')
 const sandbox = require('./routes/sandbox')
+const charts = require('./routes/charts')
 const auth = require('./routes/auth')
 
 // middleware
@@ -150,6 +151,7 @@ async function startNgrok() {
         app.use('/generate', generate)
         app.use('/encode', encode)
         app.use('/sandbox', sandbox)
+        app.use('/charts', charts)
         app.use('/tools', tools)
 
         /////////////////////// START /////////////////

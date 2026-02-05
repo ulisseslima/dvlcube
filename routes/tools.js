@@ -91,6 +91,17 @@ const routeMetadata = {
             { path: '/sandbox/java', method: 'GET', name: 'Run Java', description: 'Compile and execute Java code (class name auto-detected)', params: [
                 { name: 'code', type: 'textarea', required: true, placeholder: 'public class Main { public static void main(String[] args) { System.out.println(“Hello, World!”); } }' }
             ]}
+        ]    },
+    charts: {
+        name: 'Charts',
+        description: 'Visualize performance metrics and data',
+        icon: 'bar_chart',
+        routes: [
+            { path: '/charts/parse', method: 'POST', name: 'Generate Chart', description: 'Parse JSON performance data and generate interactive charts. Paste JSON or upload a file.', params: [
+                { name: 'data', type: 'textarea', required: false, placeholder: 'Paste your JSON data here...' },
+                { name: 'file', type: 'file', required: false, accept: '.json,application/json' },
+                { name: 'chartType', type: 'select', required: false, options: ['timeSeries', 'executionCount', 'percentiles', 'avgExecutionTime', 'errorRate', 'executionTimeComparison'], default: 'timeSeries' }
+            ]}
         ]
     }
 }
