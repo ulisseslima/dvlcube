@@ -184,6 +184,11 @@ async function startNgrok() {
         }
 
         /////////////////////// SECURITY /////////////////
+        // Serve browser /favicon.ico requests from the existing image in /public/img
+        app.get('/favicon.ico', (req, res) => {
+            return res.sendFile(path.join(__dirname, 'public', 'img', 'favicon.ico'))
+        })
+
         // routes require auth header starting from here:
         app.use((req, res, next) => {
             const secured = [
@@ -193,7 +198,7 @@ async function startNgrok() {
 
             if (!secured.includes(req.url)) {
                 console.log(`${req.url} is not secured`);
-                next()
+                return next()
             }
 
             let auth = req.headers.authorization || req.headers['x-rapidapi-proxy-secret']
