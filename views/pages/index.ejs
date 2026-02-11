@@ -2,15 +2,65 @@
 <html>
 
 <head>
-  <%- include ("../components/header.ejs") %>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8956595286308525"
      crossorigin="anonymous"></script>
+  <meta name="description" content="DVLCube — developer utilities for encoding, validation, and quick data tools.">
+  <meta name="robots" content="index, follow">
+
+  <!-- Materialize CSS -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/common.css">
 </head>
 
-<body class="white" style="display:flex;align-items:center;justify-content:center;min-height:100vh;">
-  <a href="/tools">
-    <img src="/img/dvlcube.jpg" alt="dvlcube">
-  </a>
+<body class="white">
+  <nav>
+    <div class="nav-wrapper container">
+      <a href="/" class="brand-logo">DVLCube</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="/tools">Tools</a></li>
+        <li><a href="/privacy">Privacy</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container" style="padding:40px 0;">
+    <div class="row">
+      <div class="col s12 m8">
+         <h3>DVLCube</h3>
+         <p>DVLCube provides small developer utilities: encoding/decoding helpers, validators, and data generation tools. Use the tools page to access quick APIs and interactive utilities.</p>
+         <p>Examples: encode/decode Base64, validate CPF/CNPJ, generate sample data.</p>
+         <p>If you need to contact us, email <a href="mailto:contact@dvlcube.com">contact@dvlcube.com</a>.</p>
+      </div>
+      <div class="col s12 m4 center">
+          <a href="/tools"><img src="/img/dvlcube.jpg" alt="dvlcube" style="max-width:100%;height:auto;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1)"></a>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col s12">
+         <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-8956595286308525"
+             data-ad-slot="INSERT_SLOT_ID"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="page-footer white" style="border-top:1px solid #eee;">
+    <div class="container">
+      <div class="row">
+        <div class="col s12">
+           <span style="color:#444;">&copy; <%= new Date().getFullYear() %> DVLCube — <a href="/privacy">Privacy Policy</a></span>
+        </div>
+      </div>
+    </div>
+  </footer>
 </body>
 
 </html>

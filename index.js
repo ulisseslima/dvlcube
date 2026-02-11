@@ -138,6 +138,9 @@ async function startNgrok() {
 
         app.get('/', (req, res) => res.render('pages/index'))
 
+        // Minimal privacy route used by ad/network reviews
+        app.get('/privacy', (req, res) => res.render('pages/privacy'))
+
         app.get('/cool', (req, res) => res.send(cool()))
         app.use('/curse', curse)
 
