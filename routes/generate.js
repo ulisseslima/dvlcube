@@ -181,7 +181,7 @@ function capitalizedTitle(text, style = 'APA') {
     const styleRules = {
         // APA: Lowercase articles (a, an, the), short prepositions (under 4 letters), and coordinating conjunctions
         APA: {
-            lowercase: ['a', 'an', 'the', 'and', 'but', 'or', 'nor', 'for', 'yet', 'so', 'as', 'at', 'by', 'for', 'in', 'of', 'on', 'to', 'up', 'via'],
+			lowercase: ['a', 'an', 'the', 'and', 'but', 'or', 'nor', 'for', 'yet', 'so', 'as', 'at', 'by', 'for', 'in', 'of', 'on', 'to', 'up', 'via'],
             capitalizeAfterColon: true
         },
         // AP: Similar to APA but prepositions under 4 letters are lowercase
@@ -191,17 +191,17 @@ function capitalizedTitle(text, style = 'APA') {
         },
         // Chicago: Lowercase articles, prepositions, and coordinating conjunctions regardless of length
         CHICAGO: {
-            lowercase: ['a', 'an', 'the', 'and', 'but', 'or', 'nor', 'for', 'yet', 'so', 'as', 'at', 'by', 'for', 'in', 'of', 'on', 'to', 'up', 'via', 'against', 'between', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'from', 'off', 'over', 'under', 'again', 'further', 'then', 'once'],
+            lowercase: ['a', 'an', 'the', 'and', 'but', 'or', 'nor', 'for', 'yet', 'so', 'as', 'at', 'by', 'for', 'in', 'of', 'on', 'to', 'up', 'via', 'with', 'against', 'between', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'from', 'off', 'over', 'under', 'again', 'further', 'then', 'once'],
             capitalizeAfterColon: true
         },
         // MLA: Similar to Chicago
         MLA: {
-            lowercase: ['a', 'an', 'the', 'and', 'but', 'or', 'nor', 'for', 'yet', 'so', 'as', 'at', 'by', 'for', 'in', 'of', 'on', 'to', 'up', 'via', 'against', 'between', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'from', 'off', 'over', 'under'],
+            lowercase: ['a', 'an', 'the', 'and', 'but', 'or', 'nor', 'for', 'yet', 'so', 'as', 'at', 'by', 'for', 'in', 'of', 'on', 'to', 'up', 'via', 'with', 'against', 'between', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'from', 'off', 'over', 'under'],
             capitalizeAfterColon: false
         },
         // Bluebook (legal): Capitalize articles, conjunctions, and prepositions of 4 letters or less
         BB: {
-            lowercase: ['a', 'an', 'the', 'and', 'as', 'at', 'but', 'by', 'for', 'in', 'nor', 'of', 'on', 'or', 'so', 'to', 'up', 'yet'],
+            lowercase: ['a', 'an', 'the', 'and', 'as', 'at', 'but', 'by', 'for', 'in', 'nor', 'of', 'on', 'or', 'so', 'to', 'up', 'yet', 'with'],
             capitalizeAfterColon: true
         },
         // AMA (medical): Similar to APA
@@ -214,12 +214,20 @@ function capitalizedTitle(text, style = 'APA') {
     const rules = styleRules[style.toUpperCase()] || styleRules.APA
     const lowercaseWords = new Set(rules.lowercase)
     
-    // Split by spaces while preserving multiple spaces
-    const words = text.split(/(\s+)/)
-    let isFirstWord = true
-    let afterColon = false
+	// Split by spaces while preserving multiple spaces
+	const words = text.split(/(\s+)/)
+	let isFirstWord = true
+	let afterColon = false
+
+	// Find last non-whitespace index so we can identify the final word correctly
+	const lastWordIndex = (() => {
+		for (let i = words.length - 1; i >= 0; i--) {
+			if (!/^\s+$/.test(words[i])) return i
+		}
+		return -1
+	})()
     
-    const result = words.map((word, index) => {
+	const result = words.map((word, index) => {
         // Skip whitespace
         if (/^\s+$/.test(word)) return word
         
@@ -228,18 +236,46 @@ function capitalizedTitle(text, style = 'APA') {
         
         let capitalizedWord
         
-        // Always capitalize first word and last word
-        if (isFirstWord || index === words.length - 1) {
-            capitalizedWord = word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-        }
-        // Capitalize after colon if style requires it
-        else if (afterColon && rules.capitalizeAfterColon) {
-            capitalizedWord = word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-        }
-        // Check if word should be lowercase
-        else if (lowercaseWords.has(lowerWord.replace(/[^a-z]/g, ''))) {
-            capitalizedWord = lowerWord
-        }
+		const isLastWord = index === lastWordIndex
+		
+		// Handle hyphenated compounds first (before other rules)
+		if (word.indexOf('-') !== -1) {
+			const parts = word.split('-')
+			const processed = parts.map((part, pIdx) => {
+				const partClean = part.toLowerCase().replace(/[^a-z]/g, '')
+				// Always capitalize all parts if this is the first or last word in title
+				if (isFirstWord || isLastWord) {
+					return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase()
+				}
+				// Capitalize all parts if after colon and style requires it
+				if (afterColon && rules.capitalizeAfterColon) {
+					return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase()
+				}
+				// For middle words: always capitalize first element of compound
+				if (pIdx === 0) {
+					return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase()
+				}
+				// For subsequent elements: keep lowercase if in lowercase list
+				if (lowercaseWords.has(partClean)) {
+					return part.toLowerCase()
+				}
+				// Otherwise capitalize
+				return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase()
+			})
+			capitalizedWord = processed.join('-')
+		}
+		// Always capitalize first word and last word
+		else if (isFirstWord || isLastWord) {
+			capitalizedWord = word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+		}
+		// Capitalize after colon if style requires it
+		else if (afterColon && rules.capitalizeAfterColon) {
+			capitalizedWord = word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+		}
+		// Check if word should be lowercase
+		else if (lowercaseWords.has(lowerWord.replace(/[^a-z]/g, ''))) {
+			capitalizedWord = lowerWord
+		}
         // Capitalize other words
         else {
             capitalizedWord = word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
