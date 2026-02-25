@@ -104,6 +104,32 @@ const routeMetadata = {
             ]}
         ]
     }
+    ,
+    math: {
+        name: 'Math',
+        description: 'Common math helpers: rule of three and percentage calculations',
+        icon: 'calculate',
+        routes: [
+            { path: '/math/rule-of-three', method: 'GET', name: 'Rule of Three', description: 'Solve x from a/b = c/x (cross-multiplication)', params: [
+                { name: 'a', type: 'text', required: true, placeholder: 'Enter a (numeric)' },
+                { name: 'b', type: 'text', required: true, placeholder: 'Enter b (numeric)' },
+                { name: 'c', type: 'text', required: true, placeholder: 'Enter c (numeric)' }
+            ]},
+            { path: '/math/percentage/of', method: 'GET', name: 'Percentage Of', description: 'Calculate percent of a value (percent of total)', params: [
+                { name: 'percent', type: 'text', required: true, placeholder: 'Percent (e.g. 15 for 15%)' },
+                { name: 'total', type: 'text', required: true, placeholder: 'Total value' }
+            ]},
+            { path: '/math/percentage/what-percent', method: 'GET', name: 'What Percent', description: 'Calculate what percent a part is of a total', params: [
+                { name: 'part', type: 'text', required: true, placeholder: 'Part value' },
+                { name: 'total', type: 'text', required: true, placeholder: 'Total value' }
+            ]},
+            { path: '/math/percentage/change', method: 'GET', name: 'Apply Percentage Change', description: 'Increase or decrease a value by a percentage', params: [
+                { name: 'original', type: 'text', required: true, placeholder: 'Original value' },
+                { name: 'percent', type: 'text', required: true, placeholder: 'Percent to change (e.g. 10)' },
+                { name: 'direction', type: 'select', required: false, options: ['increase','decrease'], default: 'increase' }
+            ]}
+        ]
+    }
 }
 
 // Render the tools page
