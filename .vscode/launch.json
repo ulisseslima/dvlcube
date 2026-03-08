@@ -16,6 +16,35 @@
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Remote Agent (nvm)",
+      "runtimeExecutable": "/bin/bash",
+      "runtimeArgs": [
+        "-i",
+        "-c",
+        "source $HOME/.nvm/nvm.sh && node ${workspaceFolder}/sh/remote-agent.js ${input:sessionId} --url ${input:serverUrl} --yolo"
+      ],
+      "cwd": "${workspaceFolder}",
+      "envFile": "${workspaceFolder}/.env",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ],
+  "inputs": [
+    {
+      "id": "sessionId",
+      "type": "promptString",
+      "description": "Remote control session ID"
+    },
+    {
+      "id": "serverUrl",
+      "type": "promptString",
+      "description": "DVLCube server URL",
+      "default": "http://localhost:5000"
     }
   ]
 }

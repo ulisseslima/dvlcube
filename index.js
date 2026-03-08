@@ -21,6 +21,7 @@ const sandbox = require('./routes/sandbox')
 const charts = require('./routes/charts')
 const auth = require('./routes/auth')
 const math = require('./routes/math')
+const remote = require('./routes/remote')
 
 // middleware
 const { ensureAuthenticated } = require('./middleware/auth')
@@ -157,6 +158,7 @@ async function startNgrok() {
         app.use('/sandbox', sandbox)
         app.use('/charts', charts)
         app.use('/math', math)
+        app.use('/remote', remote)
         app.use('/tools', tools)
 
         /////////////////////// START /////////////////
