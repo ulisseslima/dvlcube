@@ -48,8 +48,13 @@ function validateCpf(cpf) {
 		digitos_iguais
     
 	digitos_iguais = 1
-	if (cpf.length != 11)
+	// Normalize CPF length: pad with leading zeros or truncate to 11 chars
+	if (cpf.length < 11) {
+		cpf = cpf.padStart(11, '0')
+	} else if (cpf.length > 11) {
+		// If longer than expected after removing mask, treat as invalid
 		return false
+	}
     
 	for (i = 0; i < cpf.length - 1; i++)
 		if (cpf.charAt(i) != cpf.charAt(i + 1)) {
@@ -86,8 +91,13 @@ function validateCnpj(cnpj) {
 	let exp = /\.|\-|\//g
 	cnpj = cnpj.toString().toUpperCase().replace(exp, "")
 	
-	// Adjust size to 14 characters
-	if (cnpj.length !== 14) return false
+	// Adjust size to 14 characters: pad with leading zeros or reject if too long
+	if (cnpj.length < 14) {
+		cnpj = cnpj.padStart(14, '0')
+	} else if (cnpj.length > 14) {
+		// If longer than expected after removing mask, treat as invalid
+		return false
+	}
 	
 	// Check if all characters are alphanumeric (A-Z or 0-9)
 	if (!/^[A-Z0-9]{14}$/.test(cnpj)) return false
