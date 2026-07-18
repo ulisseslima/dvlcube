@@ -155,6 +155,7 @@ async function callRoute(event, index, path, isSandbox = false) {
     const form = event.target;
     const inputs = form.querySelectorAll('[data-param]');
     const isChart = path.startsWith('/charts/');
+    const isApiTesting = path.startsWith('/api-testing/');
     const isPost = form.closest('.route-card').dataset.method === 'POST';
 
     // Show spinner
@@ -164,7 +165,10 @@ async function callRoute(event, index, path, isSandbox = false) {
     try {
         let response, data;
 
-        if (isPost) {
+        if (isApiTesting) {
+            data = handleApiTestingRoute(inputs, index);
+            response = { ok: true };
+        } else if (isPost) {
             // Use FormData for POST requests (supports file uploads)
             const formData = new FormData();
 
@@ -222,18 +226,31 @@ async function callRoute(event, index, path, isSandbox = false) {
             response = await fetch(url);
         }
 
-        data = await response.json();
+        if (!isApiTesting) {
+            data = await response.json();
+        }
 
         const resultContainer = document.getElementById(`result-${index}`);
         const resultBox = document.getElementById(`result-box-${index}`);
 
+        const isMarkdown = path.startsWith('/markdown/');
+
         // Format output based on route type
-        if (isChart && data.success) {
+        if (isApiTesting && data.success) {
+            resultBox.innerHTML = data.rendererHtml;
+            resultBox.classList.add('rich-content');
+        } else if (isMarkdown && data.success) {
+            resultBox.innerHTML = renderMarkdownResult(data.html, index);
+            resultBox.classList.add('rich-content');
+        } else if (isChart && data.success) {
             resultBox.innerHTML = renderChart(data, index);
+            resultBox.classList.add('rich-content');
         } else if (isSandbox) {
             resultBox.innerHTML = formatSandboxOutput(data);
+            resultBox.classList.add('rich-content');
         } else {
             resultBox.textContent = JSON.stringify(data, null, 2);
+            resultBox.classList.remove('rich-content');
         }
 
         resultBox.classList.remove('error');
@@ -252,6 +269,7 @@ async function callRoute(event, index, path, isSandbox = false) {
         const resultBox = document.getElementById(`result-box-${index}`);
 
         resultBox.textContent = `Error: ${error.message}`;
+        resultBox.classList.remove('rich-content');
         resultBox.classList.add('error');
         resultContainer.classList.add('show');
     } finally {

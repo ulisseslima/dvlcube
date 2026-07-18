@@ -105,6 +105,26 @@ const routeMetadata = {
         ]
     }
     ,
+    markdown: {
+        name: 'Markdown',
+        description: 'Render Markdown and export as PDF',
+        icon: 'description',
+        routes: [
+            { path: '/markdown/render', method: 'POST', name: 'Markdown to PDF', description: 'Paste Markdown text, preview the rendered output, and export it as a formatted PDF.', params: [
+                { name: 'text', type: 'textarea', required: true, placeholder: 'Write your Markdown here...' }
+            ]}
+        ]
+    },
+    apiTesting: {
+        name: 'API Testing',
+        description: 'Paste OpenAPI/Swagger specs and render interactive docs',
+        icon: 'api',
+        routes: [
+            { path: '/api-testing/render', method: 'POST', name: 'Render OpenAPI Spec', description: 'Paste an OpenAPI/Swagger definition in JSON or YAML and render an interactive API explorer.', params: [
+                { name: 'definition', type: 'textarea', required: true, placeholder: 'Paste OpenAPI/Swagger JSON or YAML here...' }
+            ]}
+        ]
+    },
     math: {
         name: 'Math',
         description: 'Common math helpers: rule of three and percentage calculations',
